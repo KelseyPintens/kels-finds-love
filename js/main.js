@@ -14,12 +14,12 @@ const io = new IntersectionObserver(
 );
 document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
-// 2) Gentle floating hearts in the background
-(function floatHearts() {
+// 2) Gentle floating leaves in the background
+(function floatLeaves() {
   const layer = document.querySelector(".hearts");
   if (!layer || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const emojis = ["💕", "💗", "💖", "🤍", "💞"];
+  const emojis = ["🌿", "🍃", "🌱", "💚", "🍂"];
   const COUNT = 14;
 
   for (let i = 0; i < COUNT; i++) {
