@@ -238,3 +238,51 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
   * { animation: none !important; scroll-behavior: auto; }
   .section { opacity: 1; transform: none; }
 }
+
+/* ---------- ceramics ---------- */
+.pieces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.piece { margin: 0; text-align: center; }
+.piece-photo {
+  aspect-ratio: 1 / 1; border-radius: 18px; box-shadow: var(--shadow);
+  display: grid; place-content: center; font-size: 2.4rem;
+  transform: rotate(-2deg); transition: transform .3s ease;
+}
+.piece:nth-child(even) .piece-photo { transform: rotate(2deg); }
+.piece:hover .piece-photo { transform: rotate(0deg) scale(1.04); }
+.piece-photo.clay1 { background: linear-gradient(135deg, #c9a27a, #e6cfa8); }
+.piece-photo.clay2 { background: linear-gradient(135deg, #9caa7e, #cdd6b4); }
+.piece-photo.clay3 { background: linear-gradient(135deg, #b98a63, #ddba8f); }
+.piece-photo.clay4 { background: linear-gradient(135deg, #a7b48c, #d3c6a0); }
+.piece figcaption { margin-top: 12px; }
+.piece figcaption strong { display: block; color: var(--forest); font-size: 1rem; }
+.piece figcaption span { color: var(--forest-sf); font-size: .88rem; }
+
+/* ---------- parks passport ---------- */
+.passport { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 34px; box-shadow: var(--shadow); }
+.passport-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.passport-head h3 { color: var(--forest); font-size: 1.2rem; }
+.passport-count { color: var(--moss-dk); font-weight: 700; }
+.stamps { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
+.stamp { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: .92rem; border: 2px solid var(--moss); color: var(--moss-dk); background: #f3f6ec; transform: rotate(-2deg); transition: transform .2s ease; }
+.stamp:nth-child(even) { transform: rotate(1.5deg); }
+.stamp:hover { transform: rotate(0deg) scale(1.05); }
+.stamp::before { content: "✓"; color: var(--moss); font-weight: 900; }
+.wishlist-label { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--forest-sf); font-weight: 700; margin-bottom: 12px; }
+.wishlist { display: flex; flex-wrap: wrap; gap: 10px; }
+.wish { padding: 8px 14px; border-radius: 999px; border: 1px dashed var(--clay); color: var(--forest-sf); font-weight: 600; font-size: .9rem; transition: transform .15s, color .2s, border-color .2s; }
+.wish::before { content: "☆ "; color: var(--clay); }
+.wish:hover { transform: translateY(-2px); color: var(--clay); border-color: var(--clay); }
+
+/* ---------- currently ---------- */
+.now-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 900px; margin: 0 auto; }
+.now-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: 0 10px 24px -18px rgba(47,58,41,.4); transition: transform .2s ease; }
+.now-card:hover { transform: translateY(-4px); }
+.now-emoji { font-size: 1.6rem; }
+.now-card h3 { color: var(--moss-dk); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; margin: 10px 0 6px; }
+.now-card p { color: var(--forest); font-weight: 600; }
+.now-updated { text-align: center; color: var(--forest-sf); font-size: .85rem; margin-top: 20px; }
+
+@media (max-width: 860px) {
+  .pieces { grid-template-columns: repeat(2, 1fr); }
+  .now-grid { grid-template-columns: 1fr; }
+}
