@@ -1,6 +1,6 @@
 # Kelsey · Finds Love 💞
 
-A warm, modern single-page dating profile website. No build step, no
+An earthy, modern single-page dating profile website. No build step, no
 dependencies — just open it in a browser.
 
 ## Preview locally
