@@ -164,31 +164,6 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
 .piece figcaption strong { display: block; color: var(--forest); font-size: 1rem; }
 .piece figcaption span { color: var(--forest-sf); font-size: .88rem; }
 
-/* ---------- parks passport ---------- */
-.passport { max-width: 900px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 34px; box-shadow: var(--shadow); }
-.passport-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
-.passport-head h3 { color: var(--forest); font-size: 1.2rem; }
-.passport-count { color: var(--sage-dk); font-weight: 700; }
-.stamps { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-.stamp { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: .92rem; border: 2px solid var(--sage); color: var(--sage-dk); background: #eef2e3; transform: rotate(-2deg); transition: transform .2s ease; }
-.stamp:nth-child(even) { transform: rotate(1.5deg); }
-.stamp:hover { transform: rotate(0deg) scale(1.05); }
-.stamp::before { content: "✓"; color: var(--sage-dk); font-weight: 900; }
-.wishlist-label { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--forest-sf); font-weight: 700; margin-bottom: 12px; }
-.wishlist { display: flex; flex-wrap: wrap; gap: 10px; }
-.wish { padding: 8px 14px; border-radius: 999px; border: 1px dashed var(--sage-dk); color: var(--forest-sf); font-weight: 600; font-size: .9rem; transition: transform .15s, color .2s, border-color .2s; }
-.wish::before { content: "☆ "; color: var(--sage-dk); }
-.wish:hover { transform: translateY(-2px); color: var(--sage-dk); border-color: var(--sage-dk); }
-
-/* ---------- currently ---------- */
-.now-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 900px; margin: 0 auto; }
-.now-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: 0 10px 24px -18px rgba(47,58,41,.4); transition: transform .2s ease; }
-.now-card:hover { transform: translateY(-4px); }
-.now-emoji { font-size: 1.6rem; }
-.now-card h3 { color: var(--sage-dk); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; margin: 10px 0 6px; }
-.now-card p { color: var(--forest); font-weight: 600; }
-.now-updated { text-align: center; color: var(--forest-sf); font-size: .85rem; margin-top: 20px; }
-
 /* ---------- looking for ---------- */
 .looking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 0 auto; }
 .looking-col { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--line); box-shadow: var(--shadow); }
@@ -256,7 +231,6 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
   .about-grid, .looking-grid { grid-template-columns: 1fr; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .pieces { grid-template-columns: repeat(2, 1fr); }
-  .now-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
 }
 @media (max-width: 460px) {
