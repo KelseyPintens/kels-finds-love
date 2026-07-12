@@ -252,6 +252,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
       else { state.step--; state.answers.pop(); renderQuestion(); }
     });
     wrap.appendChild(back);
+    wrap.appendChild(el("p", "adv-step-label", "Question " + (state.step + 1) + " of " + path.questions.length));
     wrap.appendChild(renderProgress());
     if (state.step === 0) wrap.appendChild(el("p", "adv-intro", "“" + path.intro + "”"));
     wrap.appendChild(el("p", "adv-q", q.q));
@@ -607,6 +608,8 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
   }
 
   function reveal(winners) {
+    board.hidden = true;
+    controls.hidden = true;
     futureEl.hidden = false;
     futureEl.innerHTML = "";
     const card = document.createElement("div");
@@ -643,6 +646,8 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     busy = false;
     futureEl.hidden = true;
     futureEl.innerHTML = "";
+    board.hidden = false;
+    controls.hidden = false;
     renderBoard();
     renderControls();
   }
