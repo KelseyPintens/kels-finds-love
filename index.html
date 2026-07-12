@@ -14,10 +14,10 @@
   <header class="hero" id="top">
     <nav class="nav">
       <div class="nav-links">
-        <a href="#about">About</a>
         <a href="#adventure">A Day</a>
         <a href="#mash">MASH</a>
         <a href="#cootie">Cootie</a>
+        <a href="#about">About</a>
         <a href="#say-hi">Say Hi</a>
       </div>
     </nav>
@@ -36,48 +36,89 @@
   </header>
 
   <main>
-    <!-- About me (facts, loves, ceramics, map) -->
+    <!-- Spend a day with me (choose your own adventure) -->
+    <section class="section" id="adventure">
+      <div class="section-head">
+        <span class="kicker">01 — a day with me</span>
+        <h2>✨ What will our day look like?</h2>
+        <p class="section-sub">Everyone has their own version of a perfect day. Pick your adventure and let's see what kind of memories we'd make together.</p>
+      </div>
+      <div class="adv" id="adventure-app"></div>
+    </section>
+
+    <!-- MASH game -->
+    <section class="section" id="mash">
+      <div class="section-head">
+        <span class="kicker">02 — mash</span>
+        <h2>Let's play MASH</h2>
+        <p class="section-sub">The classic paper fortune game. Scribble a magic number, watch fate cross off the rest, and see the future we'd build together.</p>
+      </div>
+      <div class="mash" id="mash-app">
+        <div class="mash-board"></div>
+        <div class="mash-controls" id="mash-controls"></div>
+        <div class="mash-future" id="mash-future" hidden></div>
+      </div>
+    </section>
+
+    <!-- Cootie catcher (paper fortune teller) -->
+    <section class="section" id="cootie">
+      <div class="section-head">
+        <span class="kicker">03 — cootie catcher</span>
+        <h2>Pick our first date</h2>
+        <p class="section-sub">The classic paper fortune teller. Pick a color, then a number, and let it choose our first date.</p>
+      </div>
+      <div class="cc" id="cootie-app">
+        <p class="cc-step" id="cc-step">Step 1 — pick a color</p>
+        <div class="cc-stage">
+          <div class="catcher" id="cc-catcher" aria-hidden="true">
+            <div class="cc-flap cc-top"><span>Red</span></div>
+            <div class="cc-flap cc-right"><span>Blue</span></div>
+            <div class="cc-flap cc-bottom"><span>Green</span></div>
+            <div class="cc-flap cc-left"><span>Yellow</span></div>
+            <div class="cc-center" id="cc-center"></div>
+          </div>
+        </div>
+        <div class="cc-controls" id="cc-controls"></div>
+        <div class="cc-reveal" id="cc-reveal" hidden></div>
+      </div>
+    </section>
+
+    <!-- About me (facts, interests, map) -->
     <section class="section" id="about">
       <div class="section-head">
-        <span class="kicker">01 — about me</span>
+        <span class="kicker">04 — about me</span>
         <h2>A little about me</h2>
       </div>
 
       <div class="cards">
-        <div class="card"><span class="card-emoji">📍</span><h3>Based in</h3><p>Madison, WI</p></div>
-        <div class="card"><span class="card-emoji">💻</span><h3>Work</h3><p>Remote · product &amp; vision</p></div>
-        <div class="card"><span class="card-emoji">🏺</span><h3>Making</h3><p>Ceramics (a brand someday?)</p></div>
-        <div class="card"><span class="card-emoji">🏞️</span><h3>Happy place</h3><p>A national park trail</p></div>
-        <div class="card"><span class="card-emoji">🌅</span><h3>Motto</h3><p>Romanticize the everyday</p></div>
-        <div class="card"><span class="card-emoji">💬</span><h3>Love language</h3><p>Deep talks &amp; adventures</p></div>
+        <div class="card"><span class="card-emoji">🎂</span><h3>Age</h3><p>32</p></div>
+        <div class="card"><span class="card-emoji">📍</span><h3>Location</h3><p>Madison, WI</p></div>
+        <div class="card"><span class="card-emoji">💼</span><h3>Job</h3><p>Product Designer · Remote</p></div>
+        <div class="card"><span class="card-emoji">📏</span><h3>Height</h3><p>4'11"</p></div>
+        <div class="card"><span class="card-emoji">🗳️</span><h3>Political views</h3><p>Liberal</p></div>
       </div>
 
       <h3 class="subhead">Things that make me light up</h3>
       <ul class="chips">
-        <li>Ceramics &amp; making things</li>
-        <li>National parks</li>
-        <li>Farmers market mornings</li>
-        <li>Road trips</li>
-        <li>Stargazing somewhere quiet</li>
-        <li>Cooking together</li>
-        <li>Hosting friends</li>
-        <li>Romanticizing the everyday</li>
-        <li>Deep conversations</li>
+        <li>Tennis</li>
+        <li>Golf</li>
+        <li>Paddleboarding</li>
+        <li>Fishing</li>
+        <li>Hiking</li>
+        <li>Ceramics</li>
+        <li>Photography</li>
+        <li>Concerts</li>
+        <li>Festivals</li>
+        <li>Gardening</li>
+        <li>Baking</li>
+        <li>Foodie</li>
+        <li>Stargazing</li>
+        <li>Picnics</li>
+        <li>Traveling</li>
+        <li>Farmers markets</li>
+        <li>Hosting</li>
         <li>Spontaneous adventures</li>
-        <li>Handmade things</li>
-        <li>Chasing sunsets</li>
-        <li>Product strategy &amp; vision</li>
-        <li>Getting outside</li>
       </ul>
-
-      <h3 class="subhead">Made by hand</h3>
-      <p class="section-sub">Currently ceramics — maybe a little lifestyle brand someday. Swap in photos of your pieces (<code>images/</code>).</p>
-      <div class="pieces">
-        <figure class="piece"><div class="piece-photo clay1">🏺</div><figcaption><strong>Speckled morning mug</strong><span>my everyday cup</span></figcaption></figure>
-        <figure class="piece"><div class="piece-photo clay2">🪴</div><figcaption><strong>Little bud vase</strong><span>for market flowers</span></figcaption></figure>
-        <figure class="piece"><div class="piece-photo clay3">🥣</div><figcaption><strong>Weeknight bowls</strong><span>a set of four</span></figcaption></figure>
-        <figure class="piece"><div class="piece-photo clay4">🍽️</div><figcaption><strong>Dinner set</strong><span>a work in progress</span></figcaption></figure>
-      </div>
 
       <h3 class="subhead">Where I've lived &amp; roamed</h3>
       <p class="section-sub">Home bases over the years, and the national parks I've made it to so far.</p>
@@ -103,53 +144,6 @@
             </ul>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Spend a day with me (choose your own adventure) -->
-    <section class="section" id="adventure">
-      <div class="section-head">
-        <span class="kicker">02 — a day with me</span>
-        <h2>✨ What will our day look like?</h2>
-        <p class="section-sub">Everyone has their own version of a perfect day. Pick your adventure and let's see what kind of memories we'd make together.</p>
-      </div>
-      <div class="adv" id="adventure-app"></div>
-    </section>
-
-    <!-- MASH game -->
-    <section class="section" id="mash">
-      <div class="section-head">
-        <span class="kicker">03 — mash</span>
-        <h2>Let's play MASH</h2>
-        <p class="section-sub">The classic paper fortune game. Scribble a magic number, watch fate cross off the rest, and see the future we'd build together.</p>
-      </div>
-      <div class="mash" id="mash-app">
-        <div class="mash-board"></div>
-        <div class="mash-controls" id="mash-controls"></div>
-        <div class="mash-future" id="mash-future" hidden></div>
-      </div>
-    </section>
-
-    <!-- Cootie catcher (paper fortune teller) -->
-    <section class="section" id="cootie">
-      <div class="section-head">
-        <span class="kicker">04 — cootie catcher</span>
-        <h2>Pick our first date</h2>
-        <p class="section-sub">The classic paper fortune teller. Pick a color, then a number, and let it choose our first date.</p>
-      </div>
-      <div class="cc" id="cootie-app">
-        <p class="cc-step" id="cc-step">Step 1 — pick a color</p>
-        <div class="cc-stage">
-          <div class="catcher" id="cc-catcher" aria-hidden="true">
-            <div class="cc-flap cc-top"><span>Red</span></div>
-            <div class="cc-flap cc-right"><span>Blue</span></div>
-            <div class="cc-flap cc-bottom"><span>Green</span></div>
-            <div class="cc-flap cc-left"><span>Yellow</span></div>
-            <div class="cc-center" id="cc-center"></div>
-          </div>
-        </div>
-        <div class="cc-controls" id="cc-controls"></div>
-        <div class="cc-reveal" id="cc-reveal" hidden></div>
       </div>
     </section>
 
