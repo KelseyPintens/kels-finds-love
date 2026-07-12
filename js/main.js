@@ -116,10 +116,10 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
           { icon: "💬", label: "Talk for hours about life, dreams, and random ideas", frag: "talking for hours about life, dreams, and half-baked ideas" }
         ]},
         { q: "The day ends with:", choices: [
-          { icon: "🌌", label: "Stargazing", frag: "ending the night stargazing" },
-          { icon: "🛖", label: "A cozy cabin weekend we accidentally discovered", frag: "accidentally turning it into a cozy cabin weekend" },
-          { icon: "🍦", label: "Ice cream while walking around a new town", frag: "getting ice cream while wandering a new town" },
-          { icon: "🌇", label: "Watching the sunset somewhere beautiful", frag: "watching the sun set somewhere beautiful" }
+          { icon: "🛖", label: "Book a cozy cabin because neither of us wants the day to end", frag: "booking a cozy cabin because neither of us wanted the day to end" },
+          { icon: "🍦", label: "Stop for ice cream even though we're full", frag: "stopping for ice cream even though we were full" },
+          { icon: "🌌", label: "Pull over somewhere quiet to watch the stars", frag: "pulling over somewhere quiet to watch the stars" },
+          { icon: "🛣️", label: "Roll the windows down and take the scenic route home", frag: "rolling the windows down for the scenic route home" }
         ]}
       ],
       story: (f) => `Looks like we'd spend our Saturday ${f[0]}, ${f[1]}, and ${f[2]}. The kind of day where the plan is not having a plan — just finding little moments worth remembering.`
@@ -130,10 +130,10 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
       intro: "Today we create something instead of just consuming something.",
       questions: [
         { q: "What are we making?", choices: [
-          { icon: "🌿", label: "Build a garden oasis", frag: "building a little garden oasis" },
-          { icon: "🏚️", label: "Restore an old house / project space", frag: "restoring an old space into something ours" },
-          { icon: "🏺", label: "Make pottery or something handmade", frag: "making pottery with our hands" },
-          { icon: "🎨", label: "Start a creative side project together", frag: "starting a creative side project together" }
+          { icon: "🪑", label: "A piece of furniture we'll proudly point out every time someone visits", frag: "building a piece of furniture we'd proudly point out to every visitor" },
+          { icon: "💡", label: "A business idea we've been talking about", frag: "chasing a business idea we'd been talking about" },
+          { icon: "🎨", label: "Something just for the fun of making it", frag: "making something just for the fun of it" },
+          { icon: "💝", label: "Something that makes someone else's day a little better", frag: "making something that brightens someone else's day" }
         ]},
         { q: "Our teamwork style:", choices: [
           { icon: "📐", label: "Carefully plan everything first", frag: "mapping out every detail first" },
@@ -141,14 +141,14 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
           { icon: "😄", label: "Make mistakes and laugh about them", frag: "making a mess of mistakes and laughing through them" },
           { icon: "🚀", label: "Turn it into a bigger project than expected", frag: "somehow turning it into a way bigger project than planned" }
         ]},
-        { q: "We celebrate by:", choices: [
-          { icon: "🍽️", label: "Having a nice dinner", frag: "having a nice dinner" },
-          { icon: "🍷", label: "Sitting outside with a drink", frag: "sitting outside with a drink" },
-          { icon: "👀", label: "Admiring what we created", frag: "just admiring what we made" },
-          { icon: "🗓️", label: "Planning our next project", frag: "already planning the next one" }
+        { q: "The best part is:", choices: [
+          { icon: "🤝", label: "Building it together", frag: "building it together" },
+          { icon: "✨", label: "Getting excited when it starts working", frag: "getting excited when it started working" },
+          { icon: "🔭", label: "Looking back at how far we came", frag: "looking back at how far we'd come" },
+          { icon: "💭", label: "Dreaming about what we'll create next", frag: "dreaming about what we'd create next" }
         ]}
       ],
-      story: (f) => `Looks like we'd spend the day ${f[0]}, ${f[1]}, and celebrating by ${f[2]}. Two people who'd rather make something together than just pass the time.`
+      story: (f) => `Looks like we'd spend the day ${f[0]}, ${f[1]}, and the best part would be ${f[2]}. Two people who'd rather make something together than just pass the time.`
     },
     relax: {
       icon: "☕", title: "A Relaxing Day With Small Surprises",
@@ -159,19 +159,19 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
           { icon: "☕", label: "Coffee and a slow morning", frag: "coffee and a slow morning" },
           { icon: "🧺", label: "Farmers market wandering", frag: "wandering the farmers market" },
           { icon: "🚶", label: "A walk somewhere beautiful", frag: "a long walk somewhere beautiful" },
-          { icon: "📖", label: "Reading, music, and no alarms", frag: "reading, music, and no alarms" }
+          { icon: "🍳", label: "Make breakfast together", frag: "making breakfast together" }
         ]},
         { q: "The surprise adventure:", choices: [
-          { icon: "🍰", label: "Discover a new dessert", frag: "a new dessert we had to try" },
-          { icon: "🥾", label: "Find a hidden trail", frag: "a hidden trail" },
-          { icon: "🎁", label: "A surprise for each other", frag: "little surprises for each other" },
-          { icon: "🐶", label: "Meet a new furry friend", frag: "a new furry friend" }
+          { icon: "🛣️", label: "We take a spontaneous detour just to see where it leads", frag: "a spontaneous detour just to see where it led" },
+          { icon: "🗺️", label: "One of us has a surprise destination in mind", frag: "a surprise destination one of us had in mind" },
+          { icon: "🦌", label: "We stumble across some unexpected wildlife", frag: "some unexpected wildlife" },
+          { icon: "🍽️", label: "We discover a new favorite restaurant or food", frag: "a new favorite restaurant" }
         ]},
         { q: "The perfect ending:", choices: [
-          { icon: "🍳", label: "Cook dinner together", frag: "cooking dinner together" },
-          { icon: "🎬", label: "Watch a movie with snacks", frag: "watching a movie with too many snacks" },
-          { icon: "🌙", label: "Sit outside and talk", frag: "sitting outside just talking" },
-          { icon: "📷", label: "Look through old photos and tell stories", frag: "flipping through old photos, telling stories" }
+          { icon: "💿", label: "Put on a record and slow dance in the kitchen", frag: "putting on a record and slow dancing in the kitchen" },
+          { icon: "🌟", label: "Sit outside talking until the stars come out", frag: "sitting outside talking until the stars came out" },
+          { icon: "🎬", label: "Curl up with a movie and dessert", frag: "curling up with a movie and dessert" },
+          { icon: "🃏", label: "Play cards or a board game", frag: "playing cards at the table" }
         ]}
       ],
       story: (f) => `Looks like we'd ease into the day with ${f[0]}, stumble into ${f[1]}, and end it ${f[2]}. Nothing fancy — just the kind of easy day you don't want to end.`
@@ -185,19 +185,19 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
           { icon: "🍽️", label: "Backyard dinner party", frag: "a backyard dinner party" },
           { icon: "🎲", label: "Cozy game night", frag: "a cozy game night" },
           { icon: "🔥", label: "Bonfire with friends", frag: "a bonfire with friends" },
-          { icon: "🏈", label: "Tailgate before an event", frag: "a tailgate before the big event" }
+          { icon: "🎄", label: "Holiday celebration", frag: "a holiday celebration" }
         ]},
         { q: "Our hosting roles:", choices: [
-          { icon: "🥘", label: "It's a potluck", frag: "turning it into a potluck" },
+          { icon: "🥘", label: "It's a potluck — everyone brings a dish", frag: "turning it into a potluck where everyone brings a dish" },
           { icon: "🎈", label: "You welcome everyone, I decorate", frag: "you on welcomes and me on decorations" },
           { icon: "👩‍🍳", label: "We make everything from scratch", frag: "making everything from scratch" },
           { icon: "🤷", label: "We invite too many people and figure it out", frag: "inviting way too many people and figuring it out" }
         ]},
         { q: "The night ends with:", choices: [
-          { icon: "⏰", label: "Everyone staying way later than planned", frag: "with everyone staying way later than planned" },
-          { icon: "💃", label: "Dancing in the kitchen", frag: "dancing in the kitchen" },
-          { icon: "🔥", label: "Deep conversations around the fire", frag: "deep in conversation around the fire" },
-          { icon: "🗓️", label: "Planning the next gathering", frag: "already planning the next gathering" }
+          { icon: "🛋️", label: "We collapse on the couch, happy and completely exhausted", frag: "collapsing on the couch, happy and completely exhausted" },
+          { icon: "😂", label: "We laugh about the funniest moment of the night", frag: "laughing about the funniest moment of the night" },
+          { icon: "⏰", label: "Everyone stays way later than planned", frag: "with everyone staying way later than planned" },
+          { icon: "🗓️", label: "We start planning the next gathering before everyone leaves", frag: "already planning the next gathering before anyone left" }
         ]}
       ],
       story: (f) => `Looks like we'd throw ${f[0]}, ${f[1]}, and end the night ${f[2]}. Turns out our idea of a perfect day is a house full of the people we love.`
@@ -205,16 +205,14 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
   };
 
   const state = { pathKey: null, step: 0, answers: [] };
-
   const clear = () => { root.innerHTML = ""; };
-  const mount = (el) => { el.classList.add("adv-screen"); root.appendChild(el); };
+  const mount = (e) => { e.classList.add("adv-screen"); root.appendChild(e); };
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
   function renderLanding() {
     state.pathKey = null; state.step = 0; state.answers = [];
     clear();
     const wrap = el("div");
-    wrap.appendChild(el("p", "adv-lead", "Four ways a Saturday together could go. Pick the one that sounds like you."));
     const cards = el("div", "adv-cards");
     Object.keys(PATHS).forEach((key) => {
       const p = PATHS[key];
@@ -248,7 +246,6 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const q = path.questions[state.step];
     clear();
     const wrap = el("div");
-
     const back = el("button", "adv-back", "← Back"); back.type = "button";
     back.addEventListener("click", () => {
       if (state.step === 0) renderLanding();
@@ -256,10 +253,8 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     });
     wrap.appendChild(back);
     wrap.appendChild(renderProgress());
-
     if (state.step === 0) wrap.appendChild(el("p", "adv-intro", "“" + path.intro + "”"));
     wrap.appendChild(el("p", "adv-q", q.q));
-
     const choices = el("div", "adv-choices");
     q.choices.forEach((c, ci) => {
       const btn = el("button", "adv-choice"); btn.type = "button";
@@ -284,20 +279,10 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     wrap.appendChild(el("div", "adv-summary-badge", path.icon));
     wrap.appendChild(el("h3", null, "✨ Our day would look something like…"));
     wrap.appendChild(el("p", "adv-story", path.story(frags)));
-
-    const tags = el("div", "adv-tags");
-    tags.appendChild(el("span", "adv-tag", path.icon + " " + path.title));
-    state.answers.forEach((ci, i) => {
-      const c = path.questions[i].choices[ci];
-      tags.appendChild(el("span", "adv-tag", c.icon + " " + c.label));
-    });
-    wrap.appendChild(tags);
-
     const actions = el("div", "adv-actions");
     const again = el("button", "adv-btn", "↻ Start over"); again.type = "button";
     again.addEventListener("click", renderLanding);
-    const know = el("a", "adv-btn adv-btn-primary", "Say hi 💌 →"); know.href = "#say-hi";
-    actions.appendChild(again); actions.appendChild(know);
+    actions.appendChild(again);
     wrap.appendChild(actions);
     mount(wrap);
   }
