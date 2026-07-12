@@ -121,6 +121,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
 .btn-ghost { color: var(--forest); background: var(--card); border: 1px solid var(--line); }
 .btn-ghost:hover { transform: translateY(-2px); }
 .btn-lg { padding: 16px 34px; font-size: 1.1rem; }
+.btn-icon { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-left: 7px; display: inline-block; }
 
 /* ---------- about ---------- */
 .about-grid {
@@ -341,7 +342,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
   border: 1px solid var(--line); border-radius: 28px;
   padding: 60px 34px; max-width: 720px; margin: 0 auto; box-shadow: var(--shadow);
 }
-.contact-card h2 { margin-bottom: 14px; }
+.contact-card h2 { margin-bottom: 26px; }
 .contact-sub { color: var(--forest-sf); font-size: 1.1rem; max-width: 42ch; margin: 0 auto 28px; }
 .contact-fine { color: var(--forest-sf); font-size: .9rem; margin-top: 18px; }
 
