@@ -164,6 +164,21 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
 .piece figcaption strong { display: block; color: var(--forest); font-size: 1rem; }
 .piece figcaption span { color: var(--forest-sf); font-size: .88rem; }
 
+/* ---------- on the map ---------- */
+.map-card { max-width: 940px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 26px; box-shadow: var(--shadow); }
+.us-map { width: 100%; height: auto; display: block; }
+.us-map circle { transition: transform .15s ease; transform-box: fill-box; transform-origin: center; }
+.us-map circle:hover { transform: scale(1.35); }
+.map-legend { display: flex; gap: 22px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
+.legend-item { display: inline-flex; align-items: center; gap: 8px; color: var(--forest-sf); font-weight: 600; font-size: .9rem; }
+.legend-item::before { content: ""; width: 14px; height: 14px; border-radius: 50%; }
+.legend-lived::before { background: #3f5f2e; }
+.legend-park::before { background: #6f8f5a; }
+.map-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--line); }
+.map-lists h3 { color: var(--forest); font-size: 1rem; margin-bottom: 12px; }
+.map-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.map-chips li { background: #f3f6ec; border: 1px solid var(--line); color: var(--forest); padding: 6px 12px; border-radius: 999px; font-size: .88rem; font-weight: 600; }
+
 /* ---------- looking for ---------- */
 .looking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 0 auto; }
 .looking-col { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--line); box-shadow: var(--shadow); }
@@ -232,6 +247,9 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
   .cards { grid-template-columns: repeat(2, 1fr); }
   .pieces { grid-template-columns: repeat(2, 1fr); }
   .nav-links { display: none; }
+}
+@media (max-width: 640px) {
+  .map-lists { grid-template-columns: 1fr; }
 }
 @media (max-width: 460px) {
   .cards { grid-template-columns: 1fr; }
