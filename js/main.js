@@ -304,3 +304,147 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
   renderLanding();
 })();
+
+// Cootie catcher (paper fortune teller)
+(function cootie() {
+  const app = document.getElementById("cootie-app");
+  if (!app) return;
+  const catcher = document.getElementById("cc-catcher");
+  const center = document.getElementById("cc-center");
+  const controls = document.getElementById("cc-controls");
+  const stepEl = document.getElementById("cc-step");
+  const stage = app.querySelector(".cc-stage");
+  const revealEl = document.getElementById("cc-reveal");
+
+  const COLORS = [
+    { name: "Red", letters: "RED", cls: "red" },
+    { name: "Blue", letters: "BLUE", cls: "blue" },
+    { name: "Green", letters: "GREEN", cls: "green" },
+    { name: "Yellow", letters: "YELLOW", cls: "yellow" }
+  ];
+  const DATES = [
+    { e: "🌻", t: "Go to the farmers market" },
+    { e: "🧺", t: "Picnic by the lake" },
+    { e: "🌅", t: "Sunset at Monona Terrace" },
+    { e: "🍦", t: "Ice cream and a walk around town" },
+    { e: "🥞", t: "Find a good brunch spot" },
+    { e: "⛳", t: "Go mini golfing" },
+    { e: "🎳", t: "Go bowling" },
+    { e: "🎮", t: "Go to an arcade bar" }
+  ];
+
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const OPEN = reduce ? 90 : 360;
+  const CLOSE = reduce ? 90 : 320;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  let busy = false;
+
+  async function runCount(labels) {
+    for (let i = 0; i < labels.length; i++) {
+      center.textContent = labels[i];
+      catcher.classList.add(i % 2 === 0 ? "pinch-h" : "pinch-v");
+      await sleep(OPEN);
+      catcher.classList.remove("pinch-h", "pinch-v");
+      await sleep(CLOSE);
+    }
+  }
+
+  function disableControls() {
+    controls.querySelectorAll("button").forEach((b) => (b.disabled = true));
+  }
+
+  function setColorStep() {
+    stepEl.textContent = "Step 1 — pick a color";
+    center.textContent = "";
+    controls.innerHTML = "";
+    COLORS.forEach((c) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "cc-btn cc-color cc-" + c.cls;
+      b.textContent = c.name;
+      b.addEventListener("click", () => chooseColor(c));
+      controls.appendChild(b);
+    });
+  }
+
+  async function chooseColor(c) {
+    if (busy) return;
+    busy = true;
+    disableControls();
+    await runCount(c.letters.split(""));
+    center.textContent = "";
+    busy = false;
+    setNumberStep();
+  }
+
+  function setNumberStep() {
+    stepEl.textContent = "Step 2 — pick a number";
+    controls.innerHTML = "";
+    for (let n = 1; n <= 8; n++) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "cc-btn cc-num";
+      b.textContent = n;
+      b.addEventListener("click", () => chooseNumber(n));
+      controls.appendChild(b);
+    }
+  }
+
+  async function chooseNumber(n) {
+    if (busy) return;
+    busy = true;
+    disableControls();
+    const labels = [];
+    for (let i = 1; i <= n; i++) labels.push(String(i));
+    await runCount(labels);
+    busy = false;
+    reveal();
+  }
+
+  async function reveal() {
+    const pick = DATES[Math.floor(Math.random() * DATES.length)];
+    stepEl.textContent = "Step 3 — our first date";
+    if (!reduce) {
+      catcher.classList.add("pinch-h");
+      await sleep(300);
+      catcher.classList.remove("pinch-h");
+    }
+    stage.hidden = true;
+    controls.innerHTML = "";
+    revealEl.hidden = false;
+    revealEl.innerHTML = "";
+    const card = document.createElement("div");
+    card.className = "cc-card";
+    const em = document.createElement("div");
+    em.className = "cc-card-emoji";
+    em.textContent = pick.e;
+    const t = document.createElement("h3");
+    t.className = "cc-card-title";
+    t.textContent = pick.t;
+    const s = document.createElement("p");
+    s.className = "cc-card-sub";
+    s.textContent = "Looks like this is our first date.";
+    const again = document.createElement("button");
+    again.type = "button";
+    again.className = "cc-btn cc-again";
+    again.textContent = "↻ Play again";
+    again.addEventListener("click", resetGame);
+    card.appendChild(em);
+    card.appendChild(t);
+    card.appendChild(s);
+    card.appendChild(again);
+    revealEl.appendChild(card);
+    card.querySelector(".cc-again").focus();
+  }
+
+  function resetGame() {
+    revealEl.hidden = true;
+    revealEl.innerHTML = "";
+    catcher.classList.remove("pinch-h", "pinch-v");
+    center.textContent = "";
+    stage.hidden = false;
+    setColorStep();
+  }
+
+  setColorStep();
+})();
