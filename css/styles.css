@@ -59,7 +59,7 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
   display: flex; align-items: center; justify-content: flex-end;
   padding: 22px 24px;
 }
-.nav-links { display: flex; gap: 22px; }
+.nav-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 14px 22px; }
 .nav-links a {
   color: var(--forest-sf); text-decoration: none; font-weight: 600; font-size: .95rem;
   transition: color .2s;
@@ -217,6 +217,56 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1
 .adv-btn-primary { background: var(--sage-dk); color: #fff; border-color: var(--sage-dk); }
 .adv-btn-primary:hover { background: #4f6338; border-color: #4f6338; }
 @media (max-width: 560px) { .adv-cards, .adv-choices { grid-template-columns: 1fr; } }
+
+/* ---------- MASH game ---------- */
+.mash { --mash-hand: "Segoe Script", "Bradley Hand", "Snell Roundhand", "Comic Sans MS", cursive; --mash-paper: #fffdf6; position: relative; max-width: 860px; margin: 0 auto; }
+.mash-board { position: relative; background-color: var(--mash-paper); background-image: repeating-linear-gradient(transparent, transparent 27px, #d5e4f0 27px, #d5e4f0 28px); border: 1px solid var(--line); border-radius: 16px; padding: 30px 30px 34px 58px; box-shadow: 0 18px 40px -20px rgba(47,58,41,.35); overflow: hidden; }
+.mash-board::before { content: ""; position: absolute; top: 0; bottom: 0; left: 38px; width: 2px; background: #e6a3a3; }
+.mash-doodle { position: absolute; font-size: 1.4rem; opacity: .5; pointer-events: none; z-index: 1; }
+.mash-title { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px 26px; justify-content: center; margin-bottom: 24px; }
+.mash-letter { font-family: var(--mash-hand); font-size: 1.7rem; font-weight: 700; color: var(--forest); position: relative; }
+.mash-letter b { color: var(--sage-dk); }
+.mash-cats { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 18px; }
+.mash-cat h4 { font-family: var(--mash-hand); font-size: 1.18rem; color: var(--sage-dk); margin-bottom: 6px; }
+.mash-opts { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.mash-opt { position: relative; width: fit-content; padding: 1px 4px; color: var(--forest); font-size: 1.02rem; font-family: var(--mash-hand); transition: opacity .3s; }
+.mash-item.crossed { opacity: .4; }
+.mash-item.crossed::before, .mash-item.crossed::after { content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 2.5px; background: #c0392b; border-radius: 2px; transform-origin: left center; }
+.mash-item.crossed::before { --r: -11deg; transform: translateY(-50%) rotate(var(--r)) scaleX(0); animation: mashX .26s ease forwards; }
+.mash-item.crossed::after { --r: 9deg; transform: translateY(-50%) rotate(var(--r)) scaleX(0); animation: mashX .26s ease .1s forwards; }
+@keyframes mashX { to { transform: translateY(-50%) rotate(var(--r)) scaleX(1); } }
+.mash-item.mash-winner { color: var(--sage-dk); font-weight: 700; }
+.mash-item.mash-winner::after { content: ""; position: absolute; inset: -5px -9px; border: 2.5px solid var(--sage); border-radius: 60% 40% 55% 45% / 52% 56% 44% 48%; transform: rotate(-2deg); animation: mashPop .45s cubic-bezier(.34,1.6,.5,1); pointer-events: none; }
+@keyframes mashPop { from { opacity: 0; transform: rotate(-2deg) scale(.55); } to { opacity: 1; transform: rotate(-2deg) scale(1); } }
+.mash-controls { text-align: center; margin-top: 28px; }
+.mash-hint { font-family: var(--mash-hand); color: var(--forest-sf); font-size: 1.08rem; margin-bottom: 12px; }
+.mash-tally { min-height: 46px; display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.mash-group { position: relative; display: inline-flex; gap: 5px; padding: 0 3px; }
+.mash-mark { width: 3px; height: 34px; background: var(--forest); border-radius: 2px; animation: mashMarkIn .12s ease; }
+.mash-slash { position: absolute; left: -5px; right: -5px; top: 50%; height: 3px; background: var(--forest); border-radius: 2px; transform: translateY(-50%) rotate(-20deg); animation: mashMarkIn .12s ease; }
+@keyframes mashMarkIn { from { opacity: 0; transform: scaleY(.2); } }
+.mash-hold { font-family: var(--mash-hand); font-size: 1.12rem; background: var(--sage-dk); color: #fff; border: none; border-radius: 14px; padding: 14px 28px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.18); user-select: none; touch-action: none; transition: transform .1s, box-shadow .1s, background .1s; }
+.mash-hold.holding { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.18); background: #4f6338; }
+.mash-hold:disabled { opacity: .5; cursor: default; }
+.mash-hold:focus-visible { outline: 3px solid var(--forest); outline-offset: 2px; }
+.mash-num-out { font-family: var(--mash-hand); font-size: 2.2rem; color: var(--sage-dk); font-weight: 800; margin-top: 12px; animation: mashPop .5s cubic-bezier(.34,1.6,.5,1); }
+.mash-future { display: flex; justify-content: center; margin-top: 26px; }
+.mash-future-card { position: relative; background: var(--mash-paper); border: 1px solid var(--line); border-radius: 22px; padding: 34px 32px; max-width: 470px; width: 100%; box-shadow: 0 18px 40px -18px rgba(47,58,41,.45); animation: ccUnfold .55s cubic-bezier(.34,1.5,.5,1); text-align: center; }
+.mash-future-card h3 { font-family: var(--mash-hand); font-size: 1.85rem; color: var(--forest); margin-bottom: 20px; }
+.mash-future-list { list-style: none; display: flex; flex-direction: column; gap: 11px; text-align: left; }
+.mash-future-list li { display: flex; gap: 11px; align-items: baseline; color: var(--forest); font-size: 1.05rem; opacity: 0; transform: translateY(8px); animation: mashLine .45s ease forwards; }
+.mash-future-list .fi { font-size: 1.25rem; flex-shrink: 0; }
+.mash-future-list .fk { color: var(--forest-sf); font-size: .92rem; }
+.mash-future-list b { color: var(--forest); }
+@keyframes mashLine { to { opacity: 1; transform: none; } }
+.mash-play { margin-top: 26px; font-family: var(--mash-hand); font-size: 1.12rem; background: var(--sage-dk); color: #fff; border: none; border-radius: 999px; padding: 13px 28px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.18); transition: transform .1s, box-shadow .1s; }
+.mash-play:hover { transform: translateY(-1px); }
+.mash-play:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+.mash-play:focus-visible { outline: 3px solid var(--forest); outline-offset: 2px; }
+.mash-confetti-piece { position: absolute; top: -20px; width: 9px; height: 14px; border-radius: 2px; z-index: 20; pointer-events: none; animation: confettiFall linear forwards; }
+@keyframes confettiFall { to { transform: translateY(115vh) rotate(680deg); } }
+@media (max-width: 640px) { .mash-cats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .mash-cats { grid-template-columns: 1fr; } .mash-board { padding-left: 46px; } }
 
 /* ---------- cootie catcher (paper fortune teller) ---------- */
 .cc { --cc-font: "Comic Sans MS", "Chalkboard SE", "Comic Neue", "Segoe Print", system-ui, sans-serif; --cc-red: #e4572e; --cc-blue: #3a86c8; --cc-green: #3fa34d; --cc-yellow: #f2c14e; max-width: 520px; margin: 0 auto; text-align: center; }

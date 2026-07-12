@@ -448,3 +448,235 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
   setColorStep();
 })();
+
+// MASH game (paper fortune / future teller)
+(function mash() {
+  const app = document.getElementById("mash-app");
+  if (!app) return;
+  const board = app.querySelector(".mash-board");
+  const controls = document.getElementById("mash-controls");
+  const futureEl = document.getElementById("mash-future");
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const CATS = [
+    { icon: "🏡", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
+    { icon: "📍", label: "We'll live in", name: "Where we'll live", options: ["Madison, WI", "Up North", "On the Lake", "Another State"] },
+    { icon: "🚙", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
+    { icon: "🐶", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
+    { icon: "✈️", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
+    { icon: "🌱", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden", "Remodel a house", "A vacation home"] },
+    { icon: "❤️", label: "Married to", name: "Spouse", options: ["Kelsey ❤️"] },
+    { icon: "👶", label: "Kids", name: "Kids", options: ["No kids"] }
+  ];
+
+  // Real MASH elimination: count every Nth eligible option, looping, until one
+  // remains per category. Single-option categories lock immediately.
+  function compute(N) {
+    const items = [];
+    CATS.forEach((c, ci) => c.options.forEach((o, oi) => items.push({ ci, oi, alive: true })));
+    const aliveInCat = (ci) => items.filter((it) => it.ci === ci && it.alive).length;
+    const eligible = (it) => it.alive && aliveInCat(it.ci) > 1;
+    const nextEligible = (from) => {
+      for (let s = 1; s <= items.length; s++) { const j = (from + s) % items.length; if (eligible(items[j])) return j; }
+      return -1;
+    };
+    const order = [];
+    let pos = -1, guard = 0;
+    const anyLeft = () => CATS.some((c, ci) => aliveInCat(ci) > 1);
+    while (anyLeft() && guard++ < 3000) {
+      let idx = pos;
+      for (let k = 0; k < N; k++) { const nx = nextEligible(idx); if (nx < 0) { idx = -1; break; } idx = nx; }
+      if (idx < 0) break;
+      items[idx].alive = false;
+      order.push({ ci: items[idx].ci, oi: items[idx].oi });
+      pos = idx;
+    }
+    const winners = CATS.map((c, ci) => items.find((it) => it.ci === ci && it.alive).oi);
+    return { order, winners };
+  }
+
+  function renderBoard() {
+    board.innerHTML = "";
+    const doodles = [["⭐", "top:10px;right:18px;transform:rotate(12deg)"], ["🌸", "bottom:14px;left:64px;transform:rotate(-10deg)"], ["❤️", "top:44%;right:22px;transform:rotate(8deg)"], ["🙂", "bottom:22px;right:34px;transform:rotate(-6deg)"]];
+    doodles.forEach(([d, css]) => { const s = document.createElement("span"); s.className = "mash-doodle"; s.textContent = d; s.style.cssText = css; board.appendChild(s); });
+
+    const title = document.createElement("div");
+    title.className = "mash-title";
+    CATS[0].options.forEach((o, oi) => {
+      const span = document.createElement("span");
+      span.className = "mash-letter mash-item";
+      span.dataset.ci = 0; span.dataset.oi = oi;
+      span.innerHTML = "<b>" + o[0] + "</b>" + o.slice(1);
+      title.appendChild(span);
+    });
+    board.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "mash-cats";
+    CATS.forEach((c, ci) => {
+      if (ci === 0) return;
+      const cell = document.createElement("div");
+      cell.className = "mash-cat";
+      const h = document.createElement("h4");
+      h.textContent = c.icon + " " + c.name;
+      cell.appendChild(h);
+      const ul = document.createElement("ul");
+      ul.className = "mash-opts";
+      c.options.forEach((o, oi) => {
+        const li = document.createElement("li");
+        li.className = "mash-opt mash-item";
+        li.dataset.ci = ci; li.dataset.oi = oi;
+        li.textContent = o;
+        ul.appendChild(li);
+      });
+      cell.appendChild(ul);
+      grid.appendChild(cell);
+    });
+    board.appendChild(grid);
+  }
+
+  let busy = false;
+
+  function renderControls() {
+    controls.innerHTML = "";
+    const gen = document.createElement("div");
+    gen.className = "mash-num-gen";
+    const hint = document.createElement("p");
+    hint.className = "mash-hint";
+    hint.textContent = "Hold the pencil to scribble your magic number…";
+    const tally = document.createElement("div");
+    tally.className = "mash-tally";
+    const hold = document.createElement("button");
+    hold.type = "button";
+    hold.className = "mash-hold";
+    hold.textContent = "✏️ Hold to draw tallies";
+    gen.appendChild(hint); gen.appendChild(tally); gen.appendChild(hold);
+    controls.appendChild(gen);
+
+    let marks = 0, holdTimer = null, finalized = false;
+    const MAX = 12;
+
+    const startHold = (e) => {
+      if (busy || finalized) return;
+      if (e && e.preventDefault) e.preventDefault();
+      if (holdTimer) return;
+      hold.classList.add("holding");
+      if (reduce) { marks = 3 + Math.floor(Math.random() * 7); drawTally(tally, marks); return; }
+      holdTimer = setInterval(() => { if (marks >= MAX) return; marks++; drawTally(tally, marks); }, 110);
+    };
+    const endHold = () => {
+      if (holdTimer) { clearInterval(holdTimer); holdTimer = null; }
+      hold.classList.remove("holding");
+      if (finalized) return;
+      if (marks > 0) { finalized = true; finishNumber(Math.max(3, marks), gen, hold); }
+    };
+    hold.addEventListener("pointerdown", startHold);
+    hold.addEventListener("pointerup", endHold);
+    hold.addEventListener("pointerleave", () => { if (holdTimer) endHold(); });
+    hold.addEventListener("pointercancel", endHold);
+    hold.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") startHold(e); });
+    hold.addEventListener("keyup", (e) => { if (e.key === " " || e.key === "Enter") endHold(); });
+  }
+
+  function drawTally(container, n) {
+    container.innerHTML = "";
+    let i = 0;
+    while (i < n) {
+      const groupN = Math.min(5, n - i);
+      const g = document.createElement("div");
+      g.className = "mash-group";
+      for (let k = 0; k < Math.min(4, groupN); k++) { const m = document.createElement("span"); m.className = "mash-mark"; g.appendChild(m); }
+      if (groupN === 5) { const sl = document.createElement("span"); sl.className = "mash-slash"; g.appendChild(sl); }
+      container.appendChild(g);
+      i += groupN;
+    }
+  }
+
+  async function finishNumber(N, gen, hold) {
+    busy = true;
+    if (hold) hold.disabled = true;
+    const out = document.createElement("p");
+    out.className = "mash-num-out";
+    out.textContent = "Your number: " + N;
+    gen.appendChild(out);
+    await sleep(reduce ? 200 : 950);
+    const { order, winners } = compute(N);
+    await eliminate(order, winners);
+  }
+
+  async function eliminate(order, winners) {
+    const step = reduce ? 0 : 300;
+    for (const { ci, oi } of order) {
+      const el = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
+      if (el) el.classList.add("crossed");
+      await sleep(step);
+    }
+    await sleep(reduce ? 0 : 250);
+    winners.forEach((oi, ci) => {
+      const el = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
+      if (el) el.classList.add("mash-winner");
+    });
+    await sleep(reduce ? 0 : 700);
+    reveal(winners);
+  }
+
+  function reveal(winners) {
+    futureEl.hidden = false;
+    futureEl.innerHTML = "";
+    const card = document.createElement("div");
+    card.className = "mash-future-card";
+    const h = document.createElement("h3");
+    h.textContent = "✨ Our future together";
+    card.appendChild(h);
+    const ul = document.createElement("ul");
+    ul.className = "mash-future-list";
+    CATS.forEach((c, ci) => {
+      const li = document.createElement("li");
+      li.style.animationDelay = (ci * 0.09) + "s";
+      const fi = document.createElement("span"); fi.className = "fi"; fi.textContent = c.icon;
+      const ft = document.createElement("span"); ft.className = "ft";
+      const fk = document.createElement("span"); fk.className = "fk"; fk.textContent = c.label + ": ";
+      const b = document.createElement("b"); b.textContent = c.options[winners[ci]];
+      ft.appendChild(fk); ft.appendChild(b);
+      li.appendChild(fi); li.appendChild(ft);
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "mash-play";
+    btn.textContent = "↻ Play again";
+    btn.addEventListener("click", resetGame);
+    card.appendChild(btn);
+    futureEl.appendChild(card);
+    if (!reduce) confetti();
+    btn.focus();
+  }
+
+  function resetGame() {
+    busy = false;
+    futureEl.hidden = true;
+    futureEl.innerHTML = "";
+    renderBoard();
+    renderControls();
+  }
+
+  function confetti() {
+    const colors = ["#9caf88", "#e0a83e", "#e4572e", "#3a86c8", "#f2c14e", "#3fa34d"];
+    for (let i = 0; i < 80; i++) {
+      const p = document.createElement("span");
+      p.className = "mash-confetti-piece";
+      p.style.left = Math.random() * 100 + "%";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDuration = (2 + Math.random() * 1.8) + "s";
+      p.style.animationDelay = (Math.random() * 0.5) + "s";
+      p.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+      app.appendChild(p);
+      setTimeout(() => p.remove(), 4400);
+    }
+  }
+
+  renderBoard();
+  renderControls();
+})();
