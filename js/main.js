@@ -461,11 +461,11 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
   const CATS = [
     { icon: "🏡", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
-    { icon: "📍", label: "We'll live in", name: "Where we'll live", options: ["Madison, WI", "Up North", "On the Lake", "Another State"] },
+    { icon: "📍", label: "We'll live in", name: "Where we'll live", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
     { icon: "🚙", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
     { icon: "🐶", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
     { icon: "✈️", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
-    { icon: "🌱", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden", "Remodel a house", "A vacation home"] },
+    { icon: "🌱", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden together", "A home renovation", "A vacation home"] },
     { icon: "❤️", label: "Married to", name: "Spouse", options: ["Kelsey ❤️"] },
     { icon: "👶", label: "Kids", name: "Kids", options: ["No kids"] }
   ];
