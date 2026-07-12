@@ -14,6 +14,57 @@ const io = new IntersectionObserver(
 );
 document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
+// ---- inline line icons (Untitled-UI / Feather style) ----
+var ICONS = {
+  cake: '<path d="M3 20h18M4 20v-7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 15c1.5 0 1.5 1 3 1s1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 2 1"/><path d="M12 8V5"/><circle cx="12" cy="3.5" r="1"/>',
+  pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+  briefcase: '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  ruler: '<path d="M4 8l4-4 12 12-4 4z"/><path d="M8.5 7.5l1.5 1.5M11.5 10.5l1.5 1.5M14.5 13.5l1.5 1.5"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+  compass: '<circle cx="12" cy="12" r="10"/><polygon points="16.2 7.8 14.1 14.1 7.8 16.2 9.9 9.9 16.2 7.8"/>',
+  tool: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9l-3.8 3.8z"/>',
+  coffee: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><line x1="6" y1="2" x2="6" y2="5"/><line x1="10" y1="2" x2="10" y2="5"/><line x1="14" y1="2" x2="14" y2="5"/>',
+  gift: '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>',
+  map: '<polygon points="2 6 9 3 15 6 22 3 22 18 15 21 9 18 2 21 2 6"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>',
+  car: '<path d="M5 13l1.6-4.5A2 2 0 0 1 8.5 7h7a2 2 0 0 1 1.9 1.5L19 13"/><path d="M4 13h16v4a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0h-4a2 2 0 0 1-4 0H5a1 1 0 0 1-1-1z"/><circle cx="7.5" cy="16.5" r="1.2"/><circle cx="16.5" cy="16.5" r="1.2"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  bag: '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  utensils: '<path d="M4 2v7a2.5 2.5 0 0 0 5 0V2"/><line x1="6.5" y1="9" x2="6.5" y2="22"/><path d="M17 2c-1.5 0-2.5 2-2.5 5s1 5 2.5 5"/><line x1="17" y1="2" x2="17" y2="22"/>',
+  sparkles: '<path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5 10.2 7.7 12 3z"/><path d="M19 14l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/>',
+  message: '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5.1A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/>',
+  home: '<path d="M3 10l9-7 9 7"/><path d="M5 9v11a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9"/>',
+  icecream: '<path d="M8 11a4 4 0 0 1 8 0"/><path d="M8 11h8l-4 10-4-10z"/>',
+  star: '<polygon points="12 3 14.6 8.6 21 9.3 16.2 13.6 17.6 20 12 16.6 6.4 20 7.8 13.6 3 9.3 9.4 8.6 12 3"/>',
+  navigation: '<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
+  chair: '<path d="M6 20v-3M18 20v-3M6 13h12M7.5 13V6a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v7M5 17h14"/>',
+  bulb: '<path d="M9 18h6M10 21.5h4M8.5 14a6 6 0 1 1 7 0 3 3 0 0 0-1 2v.5h-5V16a3 3 0 0 0-1-2z"/>',
+  palette: '<path d="M12 2a10 10 0 0 0 0 20 2 2 0 0 0 2-2 2 2 0 0 1 2-2h1.5A4.5 4.5 0 0 0 22 13.5 10 10 0 0 0 12 2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="11" r="1"/>',
+  heart: '<path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1z"/>',
+  smile: '<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5s1.3 1.8 3.5 1.8 3.5-1.8 3.5-1.8"/><line x1="9" y1="9.5" x2="9.01" y2="9.5"/><line x1="15" y1="9.5" x2="15.01" y2="9.5"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  cloud: '<path d="M17.5 19a4.5 4.5 0 0 0 0-9h-.7A6 6 0 1 0 6 15.5"/><path d="M6 19h11.5"/>',
+  disc: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/>',
+  film: '<rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="3" x2="7" y2="21"/><line x1="17" y1="3" x2="17" y2="21"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="2" y1="15" x2="22" y2="15"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  flame: '<path d="M12 2s5 3.5 5 9a5 5 0 0 1-10 0c0-1.7.8-2.9 1.7-3.9C9.4 8 10 6 9.5 4.5c2 .8 3 2.3 3.2 3.8C13.7 6.7 13 4 12 2z"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.2 9a3 3 0 0 1 5.6 1c0 2-2.8 2.6-2.8 4"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>',
+  calendar: '<rect x="3" y="4.5" width="18" height="17" rx="2"/><line x1="16" y1="2.5" x2="16" y2="6.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/>',
+  paw: '<circle cx="7" cy="10" r="1.7"/><circle cx="12" cy="8" r="1.7"/><circle cx="17" cy="10" r="1.7"/><path d="M8.5 15a3.5 3.5 0 0 1 7 0c0 2-1.6 3.2-3.5 3.2S8.5 17 8.5 15z"/>',
+  leaf: '<path d="M4 20c0-9 7-16 16-16 0 9-7 16-16 16z"/><path d="M4 20c3-5 7-8 12-9"/>',
+  user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  gamepad: '<rect x="2" y="7" width="20" height="11" rx="5"/><line x1="7" y1="11" x2="7" y2="14"/><line x1="5.5" y1="12.5" x2="8.5" y2="12.5"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/>',
+  flower: '<circle cx="12" cy="12" r="2.5"/><path d="M12 9.5a2.5 2.5 0 1 0-2.5-2.5M12 9.5a2.5 2.5 0 1 1 2.5-2.5M12 14.5a2.5 2.5 0 1 0-2.5 2.5M12 14.5a2.5 2.5 0 1 1 2.5 2.5M9.5 12a2.5 2.5 0 1 1-2.5 2.5M14.5 12a2.5 2.5 0 1 0 2.5 2.5"/>',
+  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'
+};
+function svg(name) {
+  return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.star) + '</svg>';
+}
+
+
 // "Guess my answer" game
 (function guessGame() {
   const quiz = document.getElementById("quiz");
@@ -99,105 +150,105 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
   const PATHS = {
     adventure: {
-      icon: "🌲", title: "A Spontaneous Adventure",
+      icon: "compass", title: "A Spontaneous Adventure",
       blurb: "No plans, just curiosity and an open road.",
       intro: "Today we wake up and decide… no plans. Just curiosity.",
       questions: [
         { q: "First stop:", choices: [
-          { icon: "🔍", label: "Find a hidden gem we've never been to", frag: "chasing down a hidden gem we'd never been to" },
-          { icon: "🗺️", label: "Pick a random town on the map and explore", frag: "picking a random town on the map to explore" },
-          { icon: "🚗", label: "Pack the car and head somewhere beautiful", frag: "packing the car and driving somewhere beautiful" },
-          { icon: "🌅", label: "Chase a sunset with no destination in mind", frag: "chasing a sunset with no destination in mind" }
+          { icon: "search", label: "Find a hidden gem we've never been to", frag: "chasing down a hidden gem we'd never been to" },
+          { icon: "map", label: "Pick a random town on the map and explore", frag: "picking a random town on the map to explore" },
+          { icon: "car", label: "Pack the car and head somewhere beautiful", frag: "packing the car and driving somewhere beautiful" },
+          { icon: "sun", label: "Chase a sunset with no destination in mind", frag: "chasing a sunset with no destination in mind" }
         ]},
         { q: "Along the way:", choices: [
-          { icon: "🍿", label: "Get all the best snacks", frag: "grabbing all the best snacks" },
-          { icon: "🍜", label: "Find the best local food spot", frag: "hunting down the best local food spot" },
-          { icon: "✨", label: "Try something new", frag: "trying something neither of us had done before" },
-          { icon: "💬", label: "Talk for hours about life, dreams, and random ideas", frag: "talking for hours about life, dreams, and half-baked ideas" }
+          { icon: "bag", label: "Get all the best snacks", frag: "grabbing all the best snacks" },
+          { icon: "utensils", label: "Find the best local food spot", frag: "hunting down the best local food spot" },
+          { icon: "sparkles", label: "Try something new", frag: "trying something neither of us had done before" },
+          { icon: "message", label: "Talk for hours about life, dreams, and random ideas", frag: "talking for hours about life, dreams, and half-baked ideas" }
         ]},
         { q: "The day ends with:", choices: [
-          { icon: "🛖", label: "Book a cozy cabin because neither of us wants the day to end", frag: "booking a cozy cabin because neither of us wanted the day to end" },
-          { icon: "🍦", label: "Stop for ice cream even though we're full", frag: "stopping for ice cream even though we were full" },
-          { icon: "🌌", label: "Pull over somewhere quiet to watch the stars", frag: "pulling over somewhere quiet to watch the stars" },
-          { icon: "🛣️", label: "Roll the windows down and take the scenic route home", frag: "rolling the windows down for the scenic route home" }
+          { icon: "home", label: "Book a cozy cabin because neither of us wants the day to end", frag: "booking a cozy cabin because neither of us wanted the day to end" },
+          { icon: "icecream", label: "Stop for ice cream even though we're full", frag: "stopping for ice cream even though we were full" },
+          { icon: "star", label: "Pull over somewhere quiet to watch the stars", frag: "pulling over somewhere quiet to watch the stars" },
+          { icon: "navigation", label: "Roll the windows down and take the scenic route home", frag: "rolling the windows down for the scenic route home" }
         ]}
       ],
       story: (f) => `Looks like we'd spend our Saturday ${f[0]}, ${f[1]}, and ${f[2]}. The kind of day where the plan is not having a plan — just finding little moments worth remembering.`
     },
     build: {
-      icon: "🛠️", title: "Build Something Together",
+      icon: "tool", title: "Build Something Together",
       blurb: "Make something with our hands, side by side.",
       intro: "Today we create something instead of just consuming something.",
       questions: [
         { q: "What are we making?", choices: [
-          { icon: "🪑", label: "A piece of furniture we'll proudly point out every time someone visits", frag: "building a piece of furniture we'd proudly point out to every visitor" },
-          { icon: "💡", label: "A business idea we've been talking about", frag: "chasing a business idea we'd been talking about" },
-          { icon: "🎨", label: "Something just for the fun of making it", frag: "making something just for the fun of it" },
-          { icon: "💝", label: "Something that makes someone else's day a little better", frag: "making something that brightens someone else's day" }
+          { icon: "chair", label: "A piece of furniture we'll proudly point out every time someone visits", frag: "building a piece of furniture we'd proudly point out to every visitor" },
+          { icon: "bulb", label: "A business idea we've been talking about", frag: "chasing a business idea we'd been talking about" },
+          { icon: "palette", label: "Something just for the fun of making it", frag: "making something just for the fun of it" },
+          { icon: "heart", label: "Something that makes someone else's day a little better", frag: "making something that brightens someone else's day" }
         ]},
         { q: "Our teamwork style:", choices: [
-          { icon: "📐", label: "Carefully plan everything first", frag: "mapping out every detail first" },
-          { icon: "🧭", label: "Figure it out as we go", frag: "figuring it out as we go" },
-          { icon: "😄", label: "Make mistakes and laugh about them", frag: "making a mess of mistakes and laughing through them" },
-          { icon: "🚀", label: "Turn it into a bigger project than expected", frag: "somehow turning it into a way bigger project than planned" }
+          { icon: "ruler", label: "Carefully plan everything first", frag: "mapping out every detail first" },
+          { icon: "compass", label: "Figure it out as we go", frag: "figuring it out as we go" },
+          { icon: "smile", label: "Make mistakes and laugh about them", frag: "making a mess of mistakes and laughing through them" },
+          { icon: "sparkles", label: "Turn it into a bigger project than expected", frag: "somehow turning it into a way bigger project than planned" }
         ]},
         { q: "The best part is:", choices: [
-          { icon: "🤝", label: "Building it together", frag: "building it together" },
-          { icon: "✨", label: "Getting excited when it starts working", frag: "getting excited when it started working" },
-          { icon: "🔭", label: "Looking back at how far we came", frag: "looking back at how far we'd come" },
-          { icon: "💭", label: "Dreaming about what we'll create next", frag: "dreaming about what we'd create next" }
+          { icon: "users", label: "Building it together", frag: "building it together" },
+          { icon: "sparkles", label: "Getting excited when it starts working", frag: "getting excited when it started working" },
+          { icon: "eye", label: "Looking back at how far we came", frag: "looking back at how far we'd come" },
+          { icon: "cloud", label: "Dreaming about what we'll create next", frag: "dreaming about what we'd create next" }
         ]}
       ],
       story: (f) => `Looks like we'd spend the day ${f[0]}, ${f[1]}, and the best part would be ${f[2]}. Two people who'd rather make something together than just pass the time.`
     },
     relax: {
-      icon: "☕", title: "A Relaxing Day With Small Surprises",
+      icon: "coffee", title: "A Relaxing Day With Small Surprises",
       blurb: "Slow, easy, and sprinkled with little delights.",
       intro: "No big agenda. Just a day that feels easy.",
       questions: [
         { q: "The morning starts with:", choices: [
-          { icon: "☕", label: "Coffee and a slow morning", frag: "coffee and a slow morning" },
-          { icon: "🧺", label: "Farmers market wandering", frag: "wandering the farmers market" },
-          { icon: "🚶", label: "A walk somewhere beautiful", frag: "a long walk somewhere beautiful" },
-          { icon: "🍳", label: "Make breakfast together", frag: "making breakfast together" }
+          { icon: "coffee", label: "Coffee and a slow morning", frag: "coffee and a slow morning" },
+          { icon: "bag", label: "Farmers market wandering", frag: "wandering the farmers market" },
+          { icon: "navigation", label: "A walk somewhere beautiful", frag: "a long walk somewhere beautiful" },
+          { icon: "utensils", label: "Make breakfast together", frag: "making breakfast together" }
         ]},
         { q: "The surprise adventure:", choices: [
-          { icon: "🛣️", label: "We take a spontaneous detour just to see where it leads", frag: "a spontaneous detour just to see where it led" },
-          { icon: "🗺️", label: "One of us has a surprise destination in mind", frag: "a surprise destination one of us had in mind" },
-          { icon: "🦌", label: "We stumble across some unexpected wildlife", frag: "some unexpected wildlife" },
-          { icon: "🍽️", label: "We discover a new favorite restaurant or food", frag: "a new favorite restaurant" }
+          { icon: "navigation", label: "We take a spontaneous detour just to see where it leads", frag: "a spontaneous detour just to see where it led" },
+          { icon: "map", label: "One of us has a surprise destination in mind", frag: "a surprise destination one of us had in mind" },
+          { icon: "leaf", label: "We stumble across some unexpected wildlife", frag: "some unexpected wildlife" },
+          { icon: "utensils", label: "We discover a new favorite restaurant or food", frag: "a new favorite restaurant" }
         ]},
         { q: "The perfect ending:", choices: [
-          { icon: "💿", label: "Put on a record and slow dance in the kitchen", frag: "putting on a record and slow dancing in the kitchen" },
-          { icon: "🌟", label: "Sit outside talking until the stars come out", frag: "sitting outside talking until the stars came out" },
-          { icon: "🎬", label: "Curl up with a movie and dessert", frag: "curling up with a movie and dessert" },
-          { icon: "🃏", label: "Play cards or a board game", frag: "playing cards at the table" }
+          { icon: "disc", label: "Put on a record and slow dance in the kitchen", frag: "putting on a record and slow dancing in the kitchen" },
+          { icon: "star", label: "Sit outside talking until the stars come out", frag: "sitting outside talking until the stars came out" },
+          { icon: "film", label: "Curl up with a movie and dessert", frag: "curling up with a movie and dessert" },
+          { icon: "grid", label: "Play cards or a board game", frag: "playing cards at the table" }
         ]}
       ],
       story: (f) => `Looks like we'd ease into the day with ${f[0]}, stumble into ${f[1]}, and end it ${f[2]}. Nothing fancy — just the kind of easy day you don't want to end.`
     },
     party: {
-      icon: "🎉", title: "Host a Party",
+      icon: "gift", title: "Host a Party",
       blurb: "Bring our people together for a good night.",
       intro: "Today we bring people together.",
       questions: [
         { q: "Our party theme:", choices: [
-          { icon: "🍽️", label: "Backyard dinner party", frag: "a backyard dinner party" },
-          { icon: "🎲", label: "Cozy game night", frag: "a cozy game night" },
-          { icon: "🔥", label: "Bonfire with friends", frag: "a bonfire with friends" },
-          { icon: "🎄", label: "Holiday celebration", frag: "a holiday celebration" }
+          { icon: "utensils", label: "Backyard dinner party", frag: "a backyard dinner party" },
+          { icon: "grid", label: "Cozy game night", frag: "a cozy game night" },
+          { icon: "flame", label: "Bonfire with friends", frag: "a bonfire with friends" },
+          { icon: "gift", label: "Holiday celebration", frag: "a holiday celebration" }
         ]},
         { q: "Our hosting roles:", choices: [
-          { icon: "🥘", label: "It's a potluck — everyone brings a dish", frag: "turning it into a potluck where everyone brings a dish" },
-          { icon: "🎈", label: "You welcome everyone, I decorate", frag: "you on welcomes and me on decorations" },
-          { icon: "👩‍🍳", label: "We make everything from scratch", frag: "making everything from scratch" },
-          { icon: "🤷", label: "We invite too many people and figure it out", frag: "inviting way too many people and figuring it out" }
+          { icon: "utensils", label: "It's a potluck — everyone brings a dish", frag: "turning it into a potluck where everyone brings a dish" },
+          { icon: "sparkles", label: "You welcome everyone, I decorate", frag: "you on welcomes and me on decorations" },
+          { icon: "smile", label: "We make everything from scratch", frag: "making everything from scratch" },
+          { icon: "help", label: "We invite too many people and figure it out", frag: "inviting way too many people and figuring it out" }
         ]},
         { q: "The night ends with:", choices: [
-          { icon: "🛋️", label: "We collapse on the couch, happy and completely exhausted", frag: "collapsing on the couch, happy and completely exhausted" },
-          { icon: "😂", label: "We laugh about the funniest moment of the night", frag: "laughing about the funniest moment of the night" },
-          { icon: "⏰", label: "Everyone stays way later than planned", frag: "with everyone staying way later than planned" },
-          { icon: "🗓️", label: "We start planning the next gathering before everyone leaves", frag: "already planning the next gathering before anyone left" }
+          { icon: "home", label: "We collapse on the couch, happy and completely exhausted", frag: "collapsing on the couch, happy and completely exhausted" },
+          { icon: "smile", label: "We laugh about the funniest moment of the night", frag: "laughing about the funniest moment of the night" },
+          { icon: "clock", label: "Everyone stays way later than planned", frag: "with everyone staying way later than planned" },
+          { icon: "calendar", label: "We start planning the next gathering before everyone leaves", frag: "already planning the next gathering before anyone left" }
         ]}
       ],
       story: (f) => `Looks like we'd throw ${f[0]}, ${f[1]}, and end the night ${f[2]}. Turns out our idea of a perfect day is a house full of the people we love.`
@@ -208,6 +259,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
   const clear = () => { root.innerHTML = ""; };
   const mount = (e) => { e.classList.add("adv-screen"); root.appendChild(e); };
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const iconEl = (tag, cls, name) => { const n = document.createElement(tag); if (cls) n.className = cls; n.innerHTML = svg(name); return n; };
 
   function renderLanding() {
     state.pathKey = null; state.step = 0; state.answers = [];
@@ -217,7 +269,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     Object.keys(PATHS).forEach((key) => {
       const p = PATHS[key];
       const btn = el("button", "adv-card"); btn.type = "button";
-      btn.appendChild(el("span", "adv-card-icon", p.icon));
+      btn.appendChild(iconEl("span", "adv-card-icon", p.icon));
       const txt = el("div");
       txt.appendChild(el("h3", null, p.title));
       txt.appendChild(el("p", null, p.blurb));
@@ -259,7 +311,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const choices = el("div", "adv-choices");
     q.choices.forEach((c, ci) => {
       const btn = el("button", "adv-choice"); btn.type = "button";
-      btn.appendChild(el("span", "adv-choice-icon", c.icon));
+      btn.appendChild(iconEl("span", "adv-choice-icon", c.icon));
       btn.appendChild(el("span", null, c.label));
       btn.addEventListener("click", () => {
         state.answers[state.step] = ci;
@@ -277,8 +329,9 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const frags = state.answers.map((ci, i) => path.questions[i].choices[ci].frag);
     clear();
     const wrap = el("div", "adv-summary");
-    wrap.appendChild(el("div", "adv-summary-badge", path.icon));
-    wrap.appendChild(el("h3", null, "✨ Our day would look something like…"));
+    wrap.appendChild(iconEl("div", "adv-summary-badge", path.icon));
+    const h = el("h3"); h.innerHTML = svg("sparkles") + " Our day would look something like…";
+    wrap.appendChild(h);
     wrap.appendChild(el("p", "adv-story", path.story(frags)));
     const actions = el("div", "adv-actions");
     const again = el("button", "adv-btn", "↻ Start over"); again.type = "button";
@@ -309,14 +362,14 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     { name: "Yellow", letters: "YELLOW", cls: "yellow" }
   ];
   const DATES = [
-    { e: "🌻", t: "Go to the farmers market" },
-    { e: "🧺", t: "Picnic by the lake" },
-    { e: "🌅", t: "Sunset at Monona Terrace" },
-    { e: "🍦", t: "Ice cream and a walk around town" },
-    { e: "🥞", t: "Find a good brunch spot" },
-    { e: "⛳", t: "Go mini golfing" },
-    { e: "🎳", t: "Go bowling" },
-    { e: "🎮", t: "Go to an arcade bar" }
+    { e: "sun", t: "Go to the farmers market" },
+    { e: "bag", t: "Picnic by the lake" },
+    { e: "sun", t: "Sunset at Monona Terrace" },
+    { e: "icecream", t: "Ice cream and a walk around town" },
+    { e: "utensils", t: "Find a good brunch spot" },
+    { e: "flag", t: "Go mini golfing" },
+    { e: "target", t: "Go bowling" },
+    { e: "gamepad", t: "Go to an arcade bar" }
   ];
 
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -403,7 +456,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     card.className = "cc-card";
     const em = document.createElement("div");
     em.className = "cc-card-emoji";
-    em.textContent = pick.e;
+    em.innerHTML = svg(pick.e);
     const t = document.createElement("h3");
     t.className = "cc-card-title";
     t.textContent = pick.t;
@@ -446,18 +499,16 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   const CATS = [
-    { icon: "🏡", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
-    { icon: "📍", label: "We'll live in", name: "Where we'll live", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
-    { icon: "🚙", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
-    { icon: "🐶", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
-    { icon: "✈️", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
-    { icon: "🌱", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden together", "A home renovation", "A vacation home"] },
-    { icon: "❤️", label: "Married to", name: "Spouse", options: ["Kelsey ❤️"] },
-    { icon: "👶", label: "Kids", name: "Kids", options: ["No kids"] }
+    { icon: "home", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
+    { icon: "pin", label: "We'll live in", name: "Where we'll live", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
+    { icon: "car", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
+    { icon: "paw", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
+    { icon: "navigation", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
+    { icon: "leaf", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden together", "A home renovation", "A vacation home"] },
+    { icon: "heart", label: "Married to", name: "Spouse", options: ["Kelsey"] },
+    { icon: "user", label: "Kids", name: "Kids", options: ["No kids"] }
   ];
 
-  // Real MASH elimination: count every Nth eligible option, looping, until one
-  // remains per category. Single-option categories lock immediately.
   function compute(N) {
     const items = [];
     CATS.forEach((c, ci) => c.options.forEach((o, oi) => items.push({ ci, oi, alive: true })));
@@ -484,8 +535,8 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
 
   function renderBoard() {
     board.innerHTML = "";
-    const doodles = [["⭐", "top:10px;right:18px;transform:rotate(12deg)"], ["🌸", "bottom:14px;left:64px;transform:rotate(-10deg)"], ["❤️", "top:44%;right:22px;transform:rotate(8deg)"], ["🙂", "bottom:22px;right:34px;transform:rotate(-6deg)"]];
-    doodles.forEach(([d, css]) => { const s = document.createElement("span"); s.className = "mash-doodle"; s.textContent = d; s.style.cssText = css; board.appendChild(s); });
+    const doodles = [["star", "top:10px;right:18px;transform:rotate(12deg)"], ["flower", "bottom:14px;left:64px;transform:rotate(-10deg)"], ["heart", "top:44%;right:22px;transform:rotate(8deg)"], ["smile", "bottom:22px;right:34px;transform:rotate(-6deg)"]];
+    doodles.forEach(([d, css]) => { const s = document.createElement("span"); s.className = "mash-doodle"; s.innerHTML = svg(d); s.style.cssText = css; board.appendChild(s); });
 
     const title = document.createElement("div");
     title.className = "mash-title";
@@ -505,7 +556,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
       const cell = document.createElement("div");
       cell.className = "mash-cat";
       const h = document.createElement("h4");
-      h.textContent = c.icon + " " + c.name;
+      h.innerHTML = svg(c.icon) + " " + c.name;
       cell.appendChild(h);
       const ul = document.createElement("ul");
       ul.className = "mash-opts";
@@ -536,7 +587,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const hold = document.createElement("button");
     hold.type = "button";
     hold.className = "mash-hold";
-    hold.textContent = "✏️ Hold to draw tallies";
+    hold.innerHTML = svg("pencil") + " Hold to draw tallies";
     gen.appendChild(hint); gen.appendChild(tally); gen.appendChild(hold);
     controls.appendChild(gen);
 
@@ -594,14 +645,14 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
   async function eliminate(order, winners) {
     const step = reduce ? 0 : 300;
     for (const { ci, oi } of order) {
-      const el = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
-      if (el) el.classList.add("crossed");
+      const it = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
+      if (it) it.classList.add("crossed");
       await sleep(step);
     }
     await sleep(reduce ? 0 : 250);
     winners.forEach((oi, ci) => {
-      const el = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
-      if (el) el.classList.add("mash-winner");
+      const it = board.querySelector('.mash-item[data-ci="' + ci + '"][data-oi="' + oi + '"]');
+      if (it) it.classList.add("mash-winner");
     });
     await sleep(reduce ? 0 : 700);
     reveal(winners);
@@ -615,14 +666,14 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const card = document.createElement("div");
     card.className = "mash-future-card";
     const h = document.createElement("h3");
-    h.textContent = "✨ Our future together";
+    h.innerHTML = svg("sparkles") + " Our future together";
     card.appendChild(h);
     const ul = document.createElement("ul");
     ul.className = "mash-future-list";
     CATS.forEach((c, ci) => {
       const li = document.createElement("li");
       li.style.animationDelay = (ci * 0.09) + "s";
-      const fi = document.createElement("span"); fi.className = "fi"; fi.textContent = c.icon;
+      const fi = document.createElement("span"); fi.className = "fi"; fi.innerHTML = svg(c.icon);
       const ft = document.createElement("span"); ft.className = "ft";
       const fk = document.createElement("span"); fk.className = "fk"; fk.textContent = c.label + ": ";
       const b = document.createElement("b"); b.textContent = c.options[winners[ci]];

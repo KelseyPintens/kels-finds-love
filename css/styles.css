@@ -123,6 +123,14 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--forest); line-height: 1
 .btn-ghost:hover { transform: translateY(-2px); }
 .btn-lg { padding: 14px 26px; font-size: 1.05rem; }
 .btn-icon { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-left: 7px; display: inline-block; }
+.ico { width: 1em; height: 1em; display: inline-block; vertical-align: -0.14em; }
+.fact-emoji { color: var(--sage-dk); }
+.adv-card-icon, .adv-choice-icon, .adv-summary-badge { color: var(--sage-dk); }
+.cc-card-emoji { color: var(--sage-dk); }
+.mash-doodle { color: var(--sage); }
+.mash-cat h4 .ico, .mash-future-list .fi { color: var(--sage-dk); }
+.adv-summary h3 .ico, .mash-future-card h3 .ico { color: var(--sage-dk); vertical-align: -0.12em; }
+.mash-hold .ico, .mash-future-card h3 .ico { vertical-align: -0.16em; }
 
 /* ---------- about ---------- */
 .about-grid {
