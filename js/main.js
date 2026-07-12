@@ -413,36 +413,38 @@ function svg(name) {
     await runCount(c.letters.split(""));
     center.textContent = "";
     busy = false;
-    setNumberStep();
+    setNumberStep(1);
   }
 
-  function setNumberStep() {
-    stepEl.textContent = "Step 2 — pick a number";
+  function setNumberStep(phase) {
+    stepEl.textContent = phase === 1 ? "Step 2 — pick a number" : "Step 3 — pick another number";
     controls.innerHTML = "";
     for (let n = 1; n <= 8; n++) {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "cc-btn cc-num";
       b.textContent = n;
-      b.addEventListener("click", () => chooseNumber(n));
+      b.addEventListener("click", () => chooseNumber(n, phase));
       controls.appendChild(b);
     }
   }
 
-  async function chooseNumber(n) {
+  async function chooseNumber(n, phase) {
     if (busy) return;
     busy = true;
     disableControls();
     const labels = [];
     for (let i = 1; i <= n; i++) labels.push(String(i));
     await runCount(labels);
+    center.textContent = "";
     busy = false;
-    reveal();
+    if (phase === 1) setNumberStep(2);
+    else reveal();
   }
 
   async function reveal() {
     const pick = DATES[Math.floor(Math.random() * DATES.length)];
-    stepEl.textContent = "Step 3 — our first date";
+    stepEl.textContent = "Our first date";
     if (!reduce) {
       catcher.classList.add("pinch-h");
       await sleep(300);
