@@ -296,7 +296,7 @@ document.querySelectorAll(".section").forEach((el) => io.observe(el));
     const actions = el("div", "adv-actions");
     const again = el("button", "adv-btn", "↻ Start over"); again.type = "button";
     again.addEventListener("click", renderLanding);
-    const know = el("a", "adv-btn adv-btn-primary", "Get to know me next →"); know.href = "#game";
+    const know = el("a", "adv-btn adv-btn-primary", "Say hi 💌 →"); know.href = "#say-hi";
     actions.appendChild(again); actions.appendChild(know);
     wrap.appendChild(actions);
     mount(wrap);

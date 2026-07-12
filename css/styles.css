@@ -48,6 +48,7 @@ body {
 }
 h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); color: var(--forest); line-height: 1.15; }
 .section-sub { color: var(--forest-sf); margin-top: 12px; }
+.subhead { text-align: center; font-size: clamp(1.4rem, 3.4vw, 1.9rem); color: var(--forest); line-height: 1.15; margin: 60px 0 22px; }
 .section-sub code, .about-grid code {
   background: var(--card); padding: 2px 7px; border-radius: 6px; border: 1px solid var(--line);
   font-size: .85em;
