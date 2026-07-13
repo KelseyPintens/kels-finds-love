@@ -58,7 +58,9 @@ var ICONS = {
   target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
   gamepad: '<rect x="2" y="7" width="20" height="11" rx="5"/><line x1="7" y1="11" x2="7" y2="14"/><line x1="5.5" y1="12.5" x2="8.5" y2="12.5"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="18" cy="13.5" r="1"/>',
   flower: '<circle cx="12" cy="12" r="2.5"/><path d="M12 9.5a2.5 2.5 0 1 0-2.5-2.5M12 9.5a2.5 2.5 0 1 1 2.5-2.5M12 14.5a2.5 2.5 0 1 0-2.5 2.5M12 14.5a2.5 2.5 0 1 1 2.5 2.5M9.5 12a2.5 2.5 0 1 1-2.5 2.5M14.5 12a2.5 2.5 0 1 0 2.5 2.5"/>',
-  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'
+  pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  camera: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7l1.3-2.2a1 1 0 0 1 .9-.5h2.6a1 1 0 0 1 .9.5L15.5 7"/><circle cx="12" cy="13.5" r="3.5"/>',
+  inbox: '<path d="M3 12h5l2 3h4l2-3h5"/><path d="M5.4 5.6A1 1 0 0 1 6.3 5h11.4a1 1 0 0 1 .9.6L21 12v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z"/>'
 };
 function svg(name) {
   return '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || ICONS.star) + '</svg>';
@@ -722,4 +724,113 @@ function svg(name) {
 
   renderBoard();
   renderControls();
+})();
+
+// Message Kelsey — modal form, submission storage, and private review
+(function messageForm() {
+  const form = document.getElementById("msg-form");
+  if (!form) return;
+  const openBtn = document.getElementById("open-message");
+  const modal = document.getElementById("msg-modal");
+  const thanks = document.getElementById("thanks-modal");
+  const review = document.getElementById("review");
+
+  document.querySelectorAll("[data-icon]").forEach((e) => { e.innerHTML = svg(e.dataset.icon); });
+
+  const KEY = "kelsey_submissions_v1";
+  const LS_OK = (function () { try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; } catch (e) { return false; } })();
+  let mem = [];
+  const load = () => { if (LS_OK) { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } } return mem; };
+  const store = (a) => { if (LS_OK) { try { localStorage.setItem(KEY, JSON.stringify(a)); return; } catch (e) {} } mem = a; };
+  const esc = (t) => { const d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; };
+  const fmt = (ts) => { try { return new Date(ts).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return ts; } };
+
+  // photo -> downscaled data URL
+  let photoData = null;
+  const photoInput = document.getElementById("msg-photo");
+  const preview = document.getElementById("msg-photo-preview");
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files && photoInput.files[0];
+    if (!file) { photoData = null; preview.hidden = true; return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 640; let w = img.width, h = img.height;
+        if (w > max) { h = Math.round(h * max / w); w = max; }
+        const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        cv.getContext("2d").drawImage(img, 0, 0, w, h);
+        photoData = cv.toDataURL("image/jpeg", 0.82);
+        preview.querySelector("img").src = photoData;
+        preview.hidden = false;
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function openModal() { modal.hidden = false; document.body.style.overflow = "hidden"; setTimeout(() => { const n = form.querySelector('[name="name"]'); if (n) n.focus(); }, 40); }
+  function closeModal() { modal.hidden = true; document.body.style.overflow = ""; }
+  if (openBtn) openBtn.addEventListener("click", openModal);
+  modal.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", closeModal));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+
+  const errEl = document.getElementById("msg-error");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const g = (n) => (form.querySelector('[name="' + n + '"]').value || "").trim();
+    const name = g("name"), about = g("about"), firstDate = g("firstDate"), contact = g("contact");
+    form.querySelectorAll(".invalid").forEach((x) => x.classList.remove("invalid"));
+    const missing = [];
+    if (!name) { missing.push("your name"); form.querySelector('[name="name"]').classList.add("invalid"); }
+    if (!photoData) { missing.push("a photo"); photoInput.classList.add("invalid"); }
+    if (!firstDate) { missing.push("a first-date idea"); form.querySelector('[name="firstDate"]').classList.add("invalid"); }
+    if (!contact) { missing.push("how to reach you"); form.querySelector('[name="contact"]').classList.add("invalid"); }
+    if (missing.length) { errEl.textContent = "Please add " + missing.join(", ") + "."; errEl.hidden = false; return; }
+    errEl.hidden = true;
+
+    const subs = load();
+    subs.push({ name: name, photo: photoData, about: about, firstDate: firstDate, contact: contact, ts: new Date().toISOString() });
+    store(subs);
+
+    form.reset(); photoData = null; preview.hidden = true;
+    closeModal();
+    thanks.hidden = false; document.body.style.overflow = "hidden";
+    const tb = thanks.querySelector(".modal-thanks .btn"); if (tb) tb.focus();
+  });
+
+  thanks.querySelectorAll("[data-close-thanks]").forEach((b) => b.addEventListener("click", () => {
+    thanks.hidden = true; document.body.style.overflow = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }));
+
+  // private review (unlisted): add #for-kelsey to the URL
+  function renderReview() {
+    const list = document.getElementById("review-list");
+    const subs = load().slice().reverse();
+    list.innerHTML = "";
+    if (!subs.length) { list.innerHTML = '<p class="review-empty">No submissions yet.</p>'; return; }
+    subs.forEach((s) => {
+      const card = document.createElement("div");
+      card.className = "review-card";
+      card.innerHTML =
+        (s.photo ? '<img class="review-photo" src="' + s.photo + '" alt="' + esc(s.name) + '" />' : "") +
+        '<div class="review-body">' +
+          "<h3>" + esc(s.name) + "</h3>" +
+          '<p class="review-meta">' + fmt(s.ts) + "</p>" +
+          (s.about ? "<p><strong>About:</strong> " + esc(s.about) + "</p>" : "") +
+          "<p><strong>First date:</strong> " + esc(s.firstDate) + "</p>" +
+          "<p><strong>Contact:</strong> " + esc(s.contact) + "</p>" +
+        "</div>";
+      list.appendChild(card);
+    });
+  }
+  function checkHash() {
+    const on = location.hash === "#for-kelsey";
+    review.hidden = !on;
+    document.body.style.overflow = on ? "hidden" : "";
+    if (on) renderReview();
+  }
+  window.addEventListener("hashchange", checkHash);
+  checkHash();
 })();

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Submissions &middot; Kelsey</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="review" style="position: static;">
+    <div class="review-head"><h2>Submissions</h2></div>
+    <div class="review-list" id="review-list"></div>
+  </div>
+  <script>
+  (function () {
+    var KEY = "kelsey_submissions_v1";
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } }
+    function esc(t) { var d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
+    function fmt(ts) { try { return new Date(ts).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return ts; } }
+    var list = document.getElementById("review-list");
+    var subs = load().slice().reverse();
+    if (!subs.length) { list.innerHTML = '<p class="review-empty">No submissions yet.</p>'; return; }
+    subs.forEach(function (s) {
+      var card = document.createElement("div");
+      card.className = "review-card";
+      card.innerHTML =
+        (s.photo ? '<img class="review-photo" src="' + s.photo + '" alt="' + esc(s.name) + '" />' : "") +
+        '<div class="review-body"><h3>' + esc(s.name) + "</h3>" +
+        '<p class="review-meta">' + fmt(s.ts) + "</p>" +
+        (s.about ? "<p><strong>About:</strong> " + esc(s.about) + "</p>" : "") +
+        "<p><strong>First date:</strong> " + esc(s.firstDate) + "</p>" +
+        "<p><strong>Contact:</strong> " + esc(s.contact) + "</p></div>";
+      list.appendChild(card);
+    });
+  })();
+  </script>
+</body>
+</html>

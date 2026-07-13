@@ -119,10 +119,64 @@
       <div class="contact-card">
         <p class="eyebrow">your move</p>
         <h2>Did my profile make you smile?</h2>
-        <a class="btn btn-primary btn-lg" href="mailto:ksepintens@gmail.com?subject=Hi%20Kelsey%20%F0%9F%91%8B">Send me a message <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"></path><path d="M22 2 15 22l-4-9-9-4 20-7z"></path></svg></a>
+        <button type="button" id="open-message" class="btn btn-primary btn-lg">Send me a message <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"></path><path d="M22 2 15 22l-4-9-9-4 20-7z"></path></svg></button>
       </div>
     </section>
   </main>
+
+  <!-- Message Kelsey modal -->
+  <div class="modal" id="msg-modal" hidden role="dialog" aria-modal="true" aria-labelledby="msg-title">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card">
+      <button class="modal-x" type="button" data-close aria-label="Close">&times;</button>
+      <h2 class="modal-title" id="msg-title"><span class="ico-slot" data-icon="message"></span> Message Kelsey</h2>
+      <form id="msg-form" novalidate>
+        <label class="field">
+          <span class="field-label">Name <em>*</em></span>
+          <input type="text" name="name" autocomplete="name" />
+        </label>
+        <div class="field">
+          <span class="field-label"><span class="ico-slot" data-icon="camera"></span> Send me a photo of yourself <em>*</em></span>
+          <input type="file" id="msg-photo" accept="image/*" />
+          <div class="photo-preview" id="msg-photo-preview" hidden><img alt="Your photo preview" /></div>
+        </div>
+        <label class="field">
+          <span class="field-label"><span class="ico-slot" data-icon="sparkles"></span> Tell me about yourself</span>
+          <textarea name="about" rows="3"></textarea>
+        </label>
+        <label class="field">
+          <span class="field-label"><span class="ico-slot" data-icon="flower"></span> Propose a first date <em>*</em></span>
+          <textarea name="firstDate" rows="3"></textarea>
+        </label>
+        <label class="field">
+          <span class="field-label"><span class="ico-slot" data-icon="inbox"></span> How should I contact you? <em>*</em></span>
+          <input type="text" name="contact" placeholder="Email, phone, Instagram — whatever you prefer" />
+        </label>
+        <p class="field-error" id="msg-error" hidden></p>
+        <button class="btn btn-primary btn-lg modal-send" type="submit">Send <span class="ico-slot" data-icon="heart"></span></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Thank you modal -->
+  <div class="modal" id="thanks-modal" hidden role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close-thanks></div>
+    <div class="modal-card modal-thanks">
+      <div class="thanks-icon"><span class="ico-slot" data-icon="heart"></span></div>
+      <h2>Thank you for your message!</h2>
+      <p>I can't wait to meet you!</p>
+      <button class="btn btn-primary" type="button" data-close-thanks>Close</button>
+    </div>
+  </div>
+
+  <!-- Private submissions review (unlisted — add #for-kelsey to the URL) -->
+  <div class="review" id="review" hidden>
+    <div class="review-head">
+      <h2><span class="ico-slot" data-icon="inbox"></span> Submissions</h2>
+      <a href="#" class="review-close">Close</a>
+    </div>
+    <div class="review-list" id="review-list"></div>
+  </div>
 
   <footer class="footer">
     <a href="#top" class="to-top">Back to top ↑</a>
