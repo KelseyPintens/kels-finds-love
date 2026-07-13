@@ -276,7 +276,6 @@ function svg(name) {
     Object.keys(PATHS).forEach((key) => {
       const p = PATHS[key];
       const btn = el("button", "adv-card"); btn.type = "button";
-      btn.appendChild(iconEl("span", "adv-card-icon", p.icon));
       const txt = el("div");
       txt.appendChild(el("h3", null, p.title));
       txt.appendChild(el("p", null, p.blurb));
@@ -319,7 +318,6 @@ function svg(name) {
     const choices = el("div", "adv-choices");
     q.choices.forEach((c, ci) => {
       const btn = el("button", "adv-choice"); btn.type = "button";
-      btn.appendChild(iconEl("span", "adv-choice-icon", c.icon));
       btn.appendChild(el("span", null, c.label));
       btn.addEventListener("click", () => {
         if (isLocked()) return;
