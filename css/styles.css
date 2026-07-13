@@ -50,6 +50,7 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--forest); line-height: 1
 .section-sub { color: var(--forest-sf); margin-top: 12px; }
 .subhead { text-align: center; font-size: clamp(1.2rem, 3.6vw, 1.5rem); color: var(--forest); line-height: 1.18; margin: 30px 0 16px; }
 .about-facts { max-width: 480px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; box-shadow: 0 10px 24px -18px rgba(47,58,41,.4); display: flex; flex-direction: column; }
+.about-note { max-width: 480px; margin: 26px auto 0; text-align: center; color: var(--forest-sf); font-size: 1.05rem; line-height: 1.5; }
 .fact { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; }
 .fact:not(:last-child) { border-bottom: 1px dashed var(--line); }
 .fact-emoji { font-size: 1.2rem; flex-shrink: 0; }
@@ -260,8 +261,8 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--forest); line-height: 1
 .mash-item.mash-winner::after { content: ""; position: absolute; inset: -5px -9px; border: 2.5px solid var(--sage); border-radius: 60% 40% 55% 45% / 52% 56% 44% 48%; transform: rotate(-2deg); animation: mashPop .45s cubic-bezier(.34,1.6,.5,1); pointer-events: none; }
 @keyframes mashPop { from { opacity: 0; transform: rotate(-2deg) scale(.55); } to { opacity: 1; transform: rotate(-2deg) scale(1); } }
 .mash-controls { text-align: center; margin-top: 18px; }
-.mash-hint { font-family: var(--mash-hand); color: var(--forest-sf); font-size: .95rem; margin-bottom: 8px; }
-.mash-tally { min-height: 38px; display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.mash-hint { font-family: var(--mash-hand); color: var(--forest-sf); font-size: .95rem; margin-bottom: 2px; }
+.mash-tally { min-height: 24px; display: flex; gap: 16px; justify-content: center; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
 .mash-group { position: relative; display: inline-flex; gap: 5px; padding: 0 3px; }
 .mash-mark { width: 3px; height: 28px; background: var(--forest); border-radius: 2px; animation: mashMarkIn .12s ease; }
 .mash-slash { position: absolute; left: -5px; right: -5px; top: 50%; height: 3px; background: var(--forest); border-radius: 2px; transform: translateY(-50%) rotate(-20deg); animation: mashMarkIn .12s ease; }

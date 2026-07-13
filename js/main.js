@@ -152,7 +152,7 @@ function svg(name) {
 
   const PATHS = {
     adventure: {
-      icon: "compass", title: "A Spontaneous Adventure",
+      icon: "compass", title: "A spontaneous adventure",
       blurb: "No plans, just curiosity and an open road.",
       intro: "Today we wake up and decide… no plans. Just curiosity.",
       questions: [
@@ -178,7 +178,7 @@ function svg(name) {
       story: (f) => `Looks like we'd spend our Saturday ${f[0]}, ${f[1]}, and ${f[2]}. The kind of day where the plan is not having a plan — just finding little moments worth remembering.`
     },
     build: {
-      icon: "tool", title: "Build Something Together",
+      icon: "tool", title: "Build something together",
       blurb: "Make something with our hands, side by side.",
       intro: "Today we create something instead of just consuming something.",
       questions: [
@@ -204,7 +204,7 @@ function svg(name) {
       story: (f) => `Looks like we'd spend the day ${f[0]}, ${f[1]}, and the best part would be ${f[2]}. Two people who'd rather make something together than just pass the time.`
     },
     relax: {
-      icon: "coffee", title: "A Relaxing Day With Small Surprises",
+      icon: "coffee", title: "A relaxing day with small surprises",
       blurb: "Slow, easy, and sprinkled with little delights.",
       intro: "No big agenda. Just a day that feels easy.",
       questions: [
@@ -230,7 +230,7 @@ function svg(name) {
       story: (f) => `Looks like we'd ease into the day with ${f[0]}, stumble into ${f[1]}, and end it ${f[2]}. Nothing fancy — just the kind of easy day you don't want to end.`
     },
     party: {
-      icon: "gift", title: "Host a Party",
+      icon: "gift", title: "Host a party",
       blurb: "Bring our people together for a good night.",
       intro: "Today we bring people together.",
       questions: [
@@ -259,7 +259,12 @@ function svg(name) {
 
   const state = { pathKey: null, step: 0, answers: [] };
   const clear = () => { root.innerHTML = ""; };
-  const mount = (e) => { e.classList.add("adv-screen"); root.appendChild(e); };
+  // Guard against the mobile "ghost tap": tapping re-renders the screen and the
+  // same tap can fall through onto the freshly-placed button underneath, auto-
+  // selecting the next option. Ignore taps for a beat after every screen change.
+  let navLock = 0;
+  const isLocked = () => Date.now() < navLock;
+  const mount = (e) => { e.classList.add("adv-screen"); root.appendChild(e); navLock = Date.now() + 450; };
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   const iconEl = (tag, cls, name) => { const n = document.createElement(tag); if (cls) n.className = cls; n.innerHTML = svg(name); return n; };
 
@@ -276,7 +281,7 @@ function svg(name) {
       txt.appendChild(el("h3", null, p.title));
       txt.appendChild(el("p", null, p.blurb));
       btn.appendChild(txt);
-      btn.addEventListener("click", () => { state.pathKey = key; state.step = 0; state.answers = []; renderQuestion(); });
+      btn.addEventListener("click", () => { if (isLocked()) return; state.pathKey = key; state.step = 0; state.answers = []; renderQuestion(); });
       cards.appendChild(btn);
     });
     wrap.appendChild(cards);
@@ -302,6 +307,7 @@ function svg(name) {
     const wrap = el("div");
     const back = el("button", "adv-back", "← Back"); back.type = "button";
     back.addEventListener("click", () => {
+      if (isLocked()) return;
       if (state.step === 0) renderLanding();
       else { state.step--; state.answers.pop(); renderQuestion(); }
     });
@@ -316,6 +322,7 @@ function svg(name) {
       btn.appendChild(iconEl("span", "adv-choice-icon", c.icon));
       btn.appendChild(el("span", null, c.label));
       btn.addEventListener("click", () => {
+        if (isLocked()) return;
         state.answers[state.step] = ci;
         if (state.step < path.questions.length - 1) { state.step++; renderQuestion(); }
         else renderSummary();
@@ -337,7 +344,7 @@ function svg(name) {
     wrap.appendChild(el("p", "adv-story", path.story(frags)));
     const actions = el("div", "adv-actions");
     const again = el("button", "adv-btn", "↻ Start over"); again.type = "button";
-    again.addEventListener("click", renderLanding);
+    again.addEventListener("click", () => { if (isLocked()) return; renderLanding(); });
     actions.appendChild(again);
     wrap.appendChild(actions);
     mount(wrap);
@@ -549,11 +556,11 @@ function svg(name) {
 
   const CATS = [
     { icon: "home", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
-    { icon: "pin", label: "We'll live in", name: "Where we'll live", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
+    { icon: "pin", label: "We'll live in", name: "Forever home", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
     { icon: "car", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
     { icon: "paw", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
     { icon: "navigation", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
-    { icon: "leaf", label: "Together we'll build", name: "We'll build", options: ["A business", "A garden together", "A home renovation", "A vacation home"] },
+    { icon: "leaf", label: "Together we'll build", name: "We'll build", options: ["A business", "A garden", "A home renovation", "A vacation home"] },
     { icon: "heart", label: "Married to", name: "Spouse", options: ["Kelsey"] },
     { icon: "user", label: "Kids", name: "Kids", options: ["No kids"] }
   ];
