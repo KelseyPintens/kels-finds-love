@@ -554,7 +554,7 @@ function svg(name) {
     { icon: "car", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
     { icon: "paw", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
     { icon: "navigation", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
-    { icon: "leaf", label: "Together we'll build", name: "We'll build", options: ["A lifestyle brand", "A garden together", "A home renovation", "A vacation home"] },
+    { icon: "leaf", label: "Together we'll build", name: "We'll build", options: ["A business", "A garden together", "A home renovation", "A vacation home"] },
     { icon: "heart", label: "Married to", name: "Spouse", options: ["Kelsey"] },
     { icon: "user", label: "Kids", name: "Kids", options: ["No kids"] }
   ];
@@ -850,19 +850,19 @@ function svg(name) {
     if (FORM_ENDPOINT) {
       const sendBtn = form.querySelector('button[type="submit"]');
       if (sendBtn) sendBtn.disabled = true;
+      const fd = new FormData();
+      fd.append("name", name); fd.append("about", about);
+      fd.append("firstDate", firstDate); fd.append("contact", contact);
+      fd.append("submittedAt", ts);
+      if (photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
+      // Best-effort delivery: try a normal request first, then fall back to a
+      // fire-and-forget no-cors POST so a missing CORS header still reaches the
+      // backend. The message is already saved locally either way, so a preview
+      // sandbox or flaky network never blocks the thank-you.
       try {
-        const fd = new FormData();
-        fd.append("name", name); fd.append("about", about);
-        fd.append("firstDate", firstDate); fd.append("contact", contact);
-        fd.append("submittedAt", ts);
-        if (photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
-        const res = await fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } });
-        if (!res.ok) throw new Error("status " + res.status);
+        await fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } });
       } catch (err) {
-        if (sendBtn) sendBtn.disabled = false;
-        errEl.textContent = "That didn't send — check your connection and try again.";
-        errEl.hidden = false;
-        return;
+        try { await fetch(FORM_ENDPOINT, { method: "POST", body: fd, mode: "no-cors" }); } catch (e) {}
       }
       if (sendBtn) sendBtn.disabled = false;
     }

@@ -110,7 +110,7 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--forest); line-height: 1
 
 /* ---------- buttons ---------- */
 .btn {
-  display: inline-block; padding: 13px 26px; border-radius: 999px;
+  display: inline-block; padding: 13px 26px; border-radius: 999px; border: none;
   font-weight: 700; text-decoration: none; font-size: 1rem;
   transition: transform .15s ease, box-shadow .2s ease; cursor: pointer;
 }
