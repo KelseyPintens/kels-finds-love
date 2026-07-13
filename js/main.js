@@ -856,19 +856,14 @@ function svg(name) {
     if (FORM_ENDPOINT) {
       const sendBtn = form.querySelector('button[type="submit"]');
       if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = "Sending…"; }
-      const body = (withPhoto) => {
-        const fd = new FormData();
-        fd.append("name", name); fd.append("about", about);
-        fd.append("firstDate", firstDate); fd.append("contact", contact);
-        fd.append("submittedAt", ts);
-        if (withPhoto && photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
-        return fd;
-      };
+      const fd = new FormData();
+      fd.append("name", name); fd.append("about", about);
+      fd.append("firstDate", firstDate); fd.append("contact", contact);
+      fd.append("submittedAt", ts);
+      if (photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
       let ok = false, why = "";
       try {
-        let res = await fetch(FORM_ENDPOINT, { method: "POST", body: body(true), headers: { Accept: "application/json" } });
-        // some form hosts reject file uploads outright — retry once, text only
-        if (!res.ok && photoData) res = await fetch(FORM_ENDPOINT, { method: "POST", body: body(false), headers: { Accept: "application/json" } });
+        const res = await fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } });
         ok = res.ok;
         if (!ok) { why = "the form service replied " + res.status; console.error("Form endpoint returned", res.status, await res.text().catch(() => "")); }
       } catch (err) {
