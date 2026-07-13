@@ -352,7 +352,6 @@ function svg(name) {
   if (!app) return;
   const catcher = document.getElementById("cc-catcher");
   const stepEl = document.getElementById("cc-step");
-  const countEl = document.getElementById("cc-count");
   const srEl = document.getElementById("cc-sr");
   const revealEl = document.getElementById("cc-reveal");
 
@@ -362,11 +361,13 @@ function svg(name) {
 
   // color name shown on each closed flap (letter count drives the count animation)
   const COLORS = { top: "Red", right: "Blue", bottom: "Green", left: "Yellow" };
-  // which four numbers are visible in each open orientation, mapped to flap position
+  // the four numbers visible in each open orientation, mapped to flap position.
+  // horizontal shows 1,2,5,6 · vertical shows 3,4,7,8 — they swap on every move.
   const NUM_SETS = {
-    h: { top: 1, right: 2, bottom: 3, left: 4 },
-    v: { top: 5, right: 6, bottom: 7, left: 8 }
+    h: { top: 1, right: 2, bottom: 5, left: 6 },
+    v: { top: 3, right: 4, bottom: 7, left: 8 }
   };
+  const alt = (o) => (o === "h" ? "v" : "h");
   // single source of truth: number -> its fixed first-date fortune
   const FORTUNES = {
     1: { icon: "flower", text: "Go to the farmers market" },
@@ -392,6 +393,7 @@ function svg(name) {
   const setStep = (txt) => { stepEl.textContent = txt; };
   const setDisabled = (state) => POSITIONS.forEach((p) => (flaps[p].disabled = state));
   const label = (p) => flaps[p].querySelector(".cc-flap-label");
+  const sortedSet = (o) => POSITIONS.map((p) => NUM_SETS[o][p]).sort((a, b) => a - b).join(", ");
 
   function clearFlapState() {
     POSITIONS.forEach((p) => flaps[p].classList.remove("lift"));
@@ -411,54 +413,50 @@ function svg(name) {
     setStep("Tap a color to begin");
   }
 
-  // open: four numbers for the given orientation
-  function showNumbers(orient, nextPhase) {
+  // put the visible number set for `orient` onto the four panels (does not move them)
+  function setNumbers(orient) {
     orientation = orient;
-    phase = nextPhase;
-    catcher.classList.add("is-open");
-    catcher.classList.remove("chomp-h", "chomp-v");
     const set = NUM_SETS[orient];
     POSITIONS.forEach((p) => {
       label(p).textContent = String(set[p]);
       flaps[p].setAttribute("aria-label", "Number " + set[p]);
-      flaps[p].disabled = false;
     });
-    setStep(nextPhase === "first" ? "Tap a number" : "Now tap your final number");
-    announce("Open. Numbers " + POSITIONS.map((p) => set[p]).sort((a, b) => a - b).join(", ") + " are showing. Choose one.");
   }
 
-  // run `count` chomps, alternating orientation, starting from `startOrient`;
-  // ends still open on its final orientation, which is returned.
-  async function runCount(count, startOrient, labelFor) {
-    let orient = startOrient;
+  // move the catcher into an open orientation (numbers ride along on the panels)
+  function moveTo(orient) {
+    catcher.classList.remove("chomp-h", "chomp-v");
+    void catcher.offsetWidth; // reflow so re-adding always animates
+    catcher.classList.add(orient === "h" ? "chomp-h" : "chomp-v");
+  }
+
+  // Count `count` beats. The catcher stays open with four numbers visible the
+  // whole time; each beat moves to the alternate orientation and — the instant
+  // it arrives — swaps to that orientation's number set. `firstOrient` is beat
+  // one's orientation; when `preShown` is true beat one's numbers are already on
+  // screen (used by the color reveal so numbers appear immediately, not late).
+  async function runCount(count, firstOrient, preShown) {
+    let orient = firstOrient;
     for (let i = 1; i <= count; i++) {
-      const txt = labelFor(i);
-      countEl.textContent = txt;
-      countEl.classList.add("show");
-      announce(txt);
-      if (!reduce) {
-        catcher.classList.remove("chomp-h", "chomp-v");
-        void catcher.offsetWidth; // reflow so the same class re-animates
-        catcher.classList.add(orient === "h" ? "chomp-h" : "chomp-v");
-        await sleep(OPEN_MS);
-      } else {
-        await sleep(0);
-      }
-      if (i < count) {
-        if (!reduce) {
-          catcher.classList.remove("chomp-h", "chomp-v");
-          await sleep(HOLD_MS);
-        }
-        orient = orient === "h" ? "v" : "h";
-      }
+      moveTo(orient);
+      await sleep(OPEN_MS);          // wait until it reaches the new orientation…
+      if (i > 1 || !preShown) setNumbers(orient); // …then update the numbers on arrival
+      announce("Numbers " + sortedSet(orient));
+      await sleep(HOLD_MS);          // hold so the set is readable before the next move
+      if (i < count) orient = alt(orient);
     }
-    countEl.classList.remove("show");
-    if (!reduce) {
-      catcher.classList.add("is-bounce");
-      await sleep(340);
-      catcher.classList.remove("is-bounce");
-    }
-    return orient;
+    return orient; // final orientation the animation stopped on
+  }
+
+  // settle into a calm open pose with `orient`'s numbers left clickable
+  function settleOpen(orient, nextPhase) {
+    phase = nextPhase;
+    setNumbers(orient);
+    catcher.classList.remove("chomp-h", "chomp-v"); // rest in the gentle open pose
+    if (!reduce) { catcher.classList.add("is-bounce"); setTimeout(() => catcher.classList.remove("is-bounce"), 340); }
+    setDisabled(false);
+    setStep(nextPhase === "first" ? "Tap a number" : "Now tap your final number");
+    announce("Numbers " + sortedSet(orient) + " are showing. Choose one.");
   }
 
   async function chooseColor(p) {
@@ -466,10 +464,13 @@ function svg(name) {
     setDisabled(true);
     const name = COLORS[p];
     setStep("Spelling out " + name + "…");
-    // first open is horizontal; letters alternate h/v from there
-    const finalOrient = await runCount(name.length, "h", (i) => name[i - 1].toUpperCase());
+    // immediately flip the colored outer sections to the numbered inner sections
+    catcher.classList.add("is-open");
+    setNumbers("h");
+    // first set is horizontal (1,2,5,6); it alternates on every letter after
+    const finalOrient = await runCount(name.length, "h", true);
+    settleOpen(finalOrient, "first");
     busy = false;
-    showNumbers(finalOrient, "first");
   }
 
   async function chooseFirstNumber(p) {
@@ -477,11 +478,11 @@ function svg(name) {
     setDisabled(true);
     const n = NUM_SETS[orientation][p];
     setStep("Counting to " + n + "…");
-    // start the chomp on the opposite orientation so the first move is visible
-    const start = orientation === "h" ? "v" : "h";
-    const finalOrient = await runCount(n, start, (i) => String(i));
+    // first beat moves to the alternate orientation so the motion is visible;
+    // numbers stay up throughout and swap on every move
+    const finalOrient = await runCount(n, alt(orientation), false);
+    settleOpen(finalOrient, "final");
     busy = false;
-    showNumbers(finalOrient, "final");
   }
 
   async function reveal(p) {
@@ -519,8 +520,6 @@ function svg(name) {
   function resetGame() {
     revealEl.hidden = true;
     revealEl.innerHTML = "";
-    countEl.classList.remove("show");
-    countEl.textContent = "";
     orientation = "h";
     showColors();
     flaps.top.focus();
