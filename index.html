@@ -65,18 +65,18 @@
         <h2>Let the cootie catcher decide</h2>
       </div>
       <div class="cc" id="cootie-app">
-        <p class="cc-step" id="cc-step">Step 1 — pick a color</p>
-        <div class="cc-stage">
-          <div class="catcher" id="cc-catcher" aria-hidden="true">
-            <div class="cc-flap cc-top"><span>Red</span></div>
-            <div class="cc-flap cc-right"><span>Blue</span></div>
-            <div class="cc-flap cc-bottom"><span>Green</span></div>
-            <div class="cc-flap cc-left"><span>Yellow</span></div>
-            <div class="cc-center" id="cc-center"></div>
+        <p class="cc-step" id="cc-step" aria-live="polite">Tap a color to begin</p>
+        <div class="cc-stage" id="cc-stage">
+          <div class="cc-catcher" id="cc-catcher">
+            <button class="cc-flap cc-top" type="button"><span class="cc-flap-label"></span></button>
+            <button class="cc-flap cc-right" type="button"><span class="cc-flap-label"></span></button>
+            <button class="cc-flap cc-bottom" type="button"><span class="cc-flap-label"></span></button>
+            <button class="cc-flap cc-left" type="button"><span class="cc-flap-label"></span></button>
           </div>
+          <div class="cc-count" id="cc-count" aria-hidden="true"></div>
+          <div class="cc-reveal" id="cc-reveal" hidden></div>
         </div>
-        <div class="cc-controls" id="cc-controls"></div>
-        <div class="cc-reveal" id="cc-reveal" hidden></div>
+        <p class="sr-only" id="cc-sr" aria-live="polite"></p>
       </div>
     </section>
 

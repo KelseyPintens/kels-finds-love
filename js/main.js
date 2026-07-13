@@ -346,150 +346,196 @@ function svg(name) {
   renderLanding();
 })();
 
-// Cootie catcher (paper fortune teller)
+// Cootie catcher (paper fortune teller) — every choice happens on the paper itself
 (function cootie() {
   const app = document.getElementById("cootie-app");
   if (!app) return;
   const catcher = document.getElementById("cc-catcher");
-  const center = document.getElementById("cc-center");
-  const controls = document.getElementById("cc-controls");
   const stepEl = document.getElementById("cc-step");
-  const stage = app.querySelector(".cc-stage");
+  const countEl = document.getElementById("cc-count");
+  const srEl = document.getElementById("cc-sr");
   const revealEl = document.getElementById("cc-reveal");
 
-  const COLORS = [
-    { name: "Red", letters: "RED", cls: "red" },
-    { name: "Blue", letters: "BLUE", cls: "blue" },
-    { name: "Green", letters: "GREEN", cls: "green" },
-    { name: "Yellow", letters: "YELLOW", cls: "yellow" }
-  ];
-  const DATES = [
-    { e: "sun", t: "Go to the farmers market" },
-    { e: "bag", t: "Picnic by the lake" },
-    { e: "sun", t: "Sunset at Monona Terrace" },
-    { e: "icecream", t: "Ice cream and a walk around town" },
-    { e: "utensils", t: "Find a good brunch spot" },
-    { e: "flag", t: "Go mini golfing" },
-    { e: "target", t: "Go bowling" },
-    { e: "gamepad", t: "Go to an arcade bar" }
-  ];
+  const POSITIONS = ["top", "right", "bottom", "left"];
+  const flaps = {};
+  POSITIONS.forEach((p) => (flaps[p] = catcher.querySelector(".cc-" + p)));
+
+  // color name shown on each closed flap (letter count drives the count animation)
+  const COLORS = { top: "Red", right: "Blue", bottom: "Green", left: "Yellow" };
+  // which four numbers are visible in each open orientation, mapped to flap position
+  const NUM_SETS = {
+    h: { top: 1, right: 2, bottom: 3, left: 4 },
+    v: { top: 5, right: 6, bottom: 7, left: 8 }
+  };
+  // single source of truth: number -> its fixed first-date fortune
+  const FORTUNES = {
+    1: { icon: "flower", text: "Go to the farmers market" },
+    2: { icon: "bag", text: "Picnic by the lake" },
+    3: { icon: "sun", text: "Sunset at Monona Terrace" },
+    4: { icon: "icecream", text: "Get ice cream and walk around town" },
+    5: { icon: "utensils", text: "Find a good brunch spot" },
+    6: { icon: "flag", text: "Go mini golfing" },
+    7: { icon: "target", text: "Go bowling" },
+    8: { icon: "gamepad", text: "Go to an arcade bar" }
+  };
 
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const OPEN = reduce ? 90 : 360;
-  const CLOSE = reduce ? 90 : 320;
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const OPEN_MS = reduce ? 0 : 300;
+  const HOLD_MS = reduce ? 0 : 190;
+
   let busy = false;
+  let phase = "color"; // "color" | "first" | "final"
+  let orientation = "h"; // current open orientation
 
-  async function runCount(labels) {
-    for (let i = 0; i < labels.length; i++) {
-      center.textContent = labels[i];
-      catcher.classList.add(i % 2 === 0 ? "pinch-h" : "pinch-v");
-      await sleep(OPEN);
-      catcher.classList.remove("pinch-h", "pinch-v");
-      await sleep(CLOSE);
-    }
+  const announce = (msg) => { srEl.textContent = msg; };
+  const setStep = (txt) => { stepEl.textContent = txt; };
+  const setDisabled = (state) => POSITIONS.forEach((p) => (flaps[p].disabled = state));
+  const label = (p) => flaps[p].querySelector(".cc-flap-label");
+
+  function clearFlapState() {
+    POSITIONS.forEach((p) => flaps[p].classList.remove("lift"));
+    catcher.classList.remove("chomp-h", "chomp-v", "is-bounce");
   }
 
-  function disableControls() {
-    controls.querySelectorAll("button").forEach((b) => (b.disabled = true));
-  }
-
-  function setColorStep() {
-    stepEl.textContent = "Step 1 — pick a color";
-    center.textContent = "";
-    controls.innerHTML = "";
-    COLORS.forEach((c) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "cc-btn cc-color cc-" + c.cls;
-      b.textContent = c.name;
-      b.addEventListener("click", () => chooseColor(c));
-      controls.appendChild(b);
+  // closed: four colors
+  function showColors() {
+    phase = "color";
+    catcher.classList.remove("is-open", "is-dim");
+    clearFlapState();
+    POSITIONS.forEach((p) => {
+      label(p).textContent = COLORS[p];
+      flaps[p].setAttribute("aria-label", COLORS[p] + " section");
+      flaps[p].disabled = false;
     });
+    setStep("Tap a color to begin");
   }
 
-  async function chooseColor(c) {
-    if (busy) return;
-    busy = true;
-    disableControls();
-    await runCount(c.letters.split(""));
-    center.textContent = "";
-    busy = false;
-    setNumberStep(1);
+  // open: four numbers for the given orientation
+  function showNumbers(orient, nextPhase) {
+    orientation = orient;
+    phase = nextPhase;
+    catcher.classList.add("is-open");
+    catcher.classList.remove("chomp-h", "chomp-v");
+    const set = NUM_SETS[orient];
+    POSITIONS.forEach((p) => {
+      label(p).textContent = String(set[p]);
+      flaps[p].setAttribute("aria-label", "Number " + set[p]);
+      flaps[p].disabled = false;
+    });
+    setStep(nextPhase === "first" ? "Tap a number" : "Now tap your final number");
+    announce("Open. Numbers " + POSITIONS.map((p) => set[p]).sort((a, b) => a - b).join(", ") + " are showing. Choose one.");
   }
 
-  function setNumberStep(phase) {
-    stepEl.textContent = phase === 1 ? "Step 2 — pick a number" : "Step 3 — pick another number";
-    controls.innerHTML = "";
-    for (let n = 1; n <= 8; n++) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "cc-btn cc-num";
-      b.textContent = n;
-      b.addEventListener("click", () => chooseNumber(n, phase));
-      controls.appendChild(b);
+  // run `count` chomps, alternating orientation, starting from `startOrient`;
+  // ends still open on its final orientation, which is returned.
+  async function runCount(count, startOrient, labelFor) {
+    let orient = startOrient;
+    for (let i = 1; i <= count; i++) {
+      const txt = labelFor(i);
+      countEl.textContent = txt;
+      countEl.classList.add("show");
+      announce(txt);
+      if (!reduce) {
+        catcher.classList.remove("chomp-h", "chomp-v");
+        void catcher.offsetWidth; // reflow so the same class re-animates
+        catcher.classList.add(orient === "h" ? "chomp-h" : "chomp-v");
+        await sleep(OPEN_MS);
+      } else {
+        await sleep(0);
+      }
+      if (i < count) {
+        if (!reduce) {
+          catcher.classList.remove("chomp-h", "chomp-v");
+          await sleep(HOLD_MS);
+        }
+        orient = orient === "h" ? "v" : "h";
+      }
     }
-  }
-
-  async function chooseNumber(n, phase) {
-    if (busy) return;
-    busy = true;
-    disableControls();
-    const labels = [];
-    for (let i = 1; i <= n; i++) labels.push(String(i));
-    await runCount(labels);
-    center.textContent = "";
-    busy = false;
-    if (phase === 1) setNumberStep(2);
-    else reveal();
-  }
-
-  async function reveal() {
-    const pick = DATES[Math.floor(Math.random() * DATES.length)];
-    stepEl.textContent = "Our first date";
+    countEl.classList.remove("show");
     if (!reduce) {
-      catcher.classList.add("pinch-h");
-      await sleep(300);
-      catcher.classList.remove("pinch-h");
+      catcher.classList.add("is-bounce");
+      await sleep(340);
+      catcher.classList.remove("is-bounce");
     }
-    stage.hidden = true;
-    controls.innerHTML = "";
-    revealEl.hidden = false;
+    return orient;
+  }
+
+  async function chooseColor(p) {
+    busy = true;
+    setDisabled(true);
+    const name = COLORS[p];
+    setStep("Spelling out " + name + "…");
+    // first open is horizontal; letters alternate h/v from there
+    const finalOrient = await runCount(name.length, "h", (i) => name[i - 1].toUpperCase());
+    busy = false;
+    showNumbers(finalOrient, "first");
+  }
+
+  async function chooseFirstNumber(p) {
+    busy = true;
+    setDisabled(true);
+    const n = NUM_SETS[orientation][p];
+    setStep("Counting to " + n + "…");
+    // start the chomp on the opposite orientation so the first move is visible
+    const start = orientation === "h" ? "v" : "h";
+    const finalOrient = await runCount(n, start, (i) => String(i));
+    busy = false;
+    showNumbers(finalOrient, "final");
+  }
+
+  async function reveal(p) {
+    busy = true;
+    setDisabled(true);
+    const n = NUM_SETS[orientation][p];
+    const f = FORTUNES[n];
+    setStep("Opening flap " + n + "…");
+    if (!reduce) {
+      flaps[p].classList.add("lift");
+      await sleep(420);
+    }
+    announce("Your first date: " + f.text + ". Looks like this is our first date.");
+    catcher.classList.add("is-dim");
     revealEl.innerHTML = "";
     const card = document.createElement("div");
     card.className = "cc-card";
-    const em = document.createElement("div");
-    em.className = "cc-card-emoji";
-    em.innerHTML = svg(pick.e);
-    const t = document.createElement("h3");
-    t.className = "cc-card-title";
-    t.textContent = pick.t;
-    const s = document.createElement("p");
-    s.className = "cc-card-sub";
-    s.textContent = "Looks like this is our first date.";
+    card.innerHTML =
+      '<div class="cc-card-emoji">' + svg(f.icon) + "</div>" +
+      '<h3 class="cc-card-title">' + f.text + "</h3>" +
+      '<p class="cc-card-sub">Looks like this is our first date.</p>';
     const again = document.createElement("button");
     again.type = "button";
-    again.className = "cc-btn cc-again";
+    again.className = "cc-again";
     again.textContent = "↻ Play again";
     again.addEventListener("click", resetGame);
-    card.appendChild(em);
-    card.appendChild(t);
-    card.appendChild(s);
     card.appendChild(again);
     revealEl.appendChild(card);
-    card.querySelector(".cc-again").focus();
+    revealEl.hidden = false;
+    setStep("Our first date");
+    again.focus();
+    busy = false;
   }
 
   function resetGame() {
     revealEl.hidden = true;
     revealEl.innerHTML = "";
-    catcher.classList.remove("pinch-h", "pinch-v");
-    center.textContent = "";
-    stage.hidden = false;
-    setColorStep();
+    countEl.classList.remove("show");
+    countEl.textContent = "";
+    orientation = "h";
+    showColors();
+    flaps.top.focus();
   }
 
-  setColorStep();
+  POSITIONS.forEach((p) => {
+    flaps[p].addEventListener("click", () => {
+      if (busy) return;
+      if (phase === "color") chooseColor(p);
+      else if (phase === "first") chooseFirstNumber(p);
+      else if (phase === "final") reveal(p);
+    });
+  });
+
+  showColors();
 })();
 
 // MASH game (paper fortune / future teller)
