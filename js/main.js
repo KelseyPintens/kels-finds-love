@@ -738,6 +738,10 @@ function svg(name) {
   document.querySelectorAll("[data-icon]").forEach((e) => { e.innerHTML = svg(e.dataset.icon); });
 
   const KEY = "kelsey_submissions_v1";
+  // Paste your form endpoint (Getform / Formspree / Basin) to receive submissions by
+  // email; leave "" to store submissions in this browser only.
+  const FORM_ENDPOINT = "";
+  function dataURLtoBlob(u) { var a = u.split(","), mime = a[0].match(/:(.*?);/)[1], bin = atob(a[1]), arr = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return new Blob([arr], { type: mime }); }
   const LS_OK = (function () { try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; } catch (e) { return false; } })();
   let mem = [];
   const load = () => { if (LS_OK) { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } } return mem; };
@@ -776,7 +780,7 @@ function svg(name) {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
 
   const errEl = document.getElementById("msg-error");
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const g = (n) => (form.querySelector('[name="' + n + '"]').value || "").trim();
     const name = g("name"), about = g("about"), firstDate = g("firstDate"), contact = g("contact");
@@ -788,10 +792,30 @@ function svg(name) {
     if (!contact) { missing.push("how to reach you"); form.querySelector('[name="contact"]').classList.add("invalid"); }
     if (missing.length) { errEl.textContent = "Please add " + missing.join(", ") + "."; errEl.hidden = false; return; }
     errEl.hidden = true;
-
+    const ts = new Date().toISOString();
     const subs = load();
-    subs.push({ name: name, photo: photoData, about: about, firstDate: firstDate, contact: contact, ts: new Date().toISOString() });
+    subs.push({ name: name, photo: photoData, about: about, firstDate: firstDate, contact: contact, ts: ts });
     store(subs);
+
+    if (FORM_ENDPOINT) {
+      const sendBtn = form.querySelector('button[type="submit"]');
+      if (sendBtn) sendBtn.disabled = true;
+      try {
+        const fd = new FormData();
+        fd.append("name", name); fd.append("about", about);
+        fd.append("firstDate", firstDate); fd.append("contact", contact);
+        fd.append("submittedAt", ts);
+        if (photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
+        const res = await fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error("status " + res.status);
+      } catch (err) {
+        if (sendBtn) sendBtn.disabled = false;
+        errEl.textContent = "That didn't send — check your connection and try again.";
+        errEl.hidden = false;
+        return;
+      }
+      if (sendBtn) sendBtn.disabled = false;
+    }
 
     form.reset(); photoData = null; preview.hidden = true;
     closeModal();
