@@ -129,31 +129,33 @@
     <div class="modal-backdrop" data-close></div>
     <div class="modal-card">
       <button class="modal-x" type="button" data-close aria-label="Close">&times;</button>
-      <h2 class="modal-title" id="msg-title"><span class="ico-slot" data-icon="message"></span> Message Kelsey</h2>
+      <h2 class="modal-title" id="msg-title">Message Kelsey</h2>
       <form id="msg-form" novalidate>
         <label class="field">
           <span class="field-label">Name <em>*</em></span>
           <input type="text" name="name" autocomplete="name" />
         </label>
         <div class="field">
-          <span class="field-label"><span class="ico-slot" data-icon="camera"></span> Send me a photo of yourself <em>*</em></span>
-          <input type="file" id="msg-photo" accept="image/*" />
+          <span class="field-label">Show me who is saying hi <em>*</em></span>
+          <input type="file" id="msg-photo" accept="image/*" class="file-hidden" />
+          <label for="msg-photo" class="upload-btn" id="msg-upload-btn">Upload photo</label>
+          <span class="file-name" id="msg-file-name"></span>
           <div class="photo-preview" id="msg-photo-preview" hidden><img alt="Your photo preview" /></div>
         </div>
         <label class="field">
-          <span class="field-label"><span class="ico-slot" data-icon="sparkles"></span> Tell me about yourself</span>
+          <span class="field-label">Tell me about yourself</span>
           <textarea name="about" rows="3"></textarea>
         </label>
         <label class="field">
-          <span class="field-label"><span class="ico-slot" data-icon="flower"></span> Propose a first date <em>*</em></span>
+          <span class="field-label">Propose a first date <em>*</em></span>
           <textarea name="firstDate" rows="3"></textarea>
         </label>
         <label class="field">
-          <span class="field-label"><span class="ico-slot" data-icon="inbox"></span> How should I contact you? <em>*</em></span>
+          <span class="field-label">How should I contact you? <em>*</em></span>
           <input type="text" name="contact" placeholder="Email, phone, Instagram — whatever you prefer" />
         </label>
         <p class="field-error" id="msg-error" hidden></p>
-        <button class="btn btn-primary btn-lg modal-send" type="submit">Send <span class="ico-slot" data-icon="heart"></span></button>
+        <button class="btn btn-primary btn-lg modal-send" type="submit">Send</button>
       </form>
     </div>
   </div>

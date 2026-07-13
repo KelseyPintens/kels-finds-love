@@ -755,7 +755,11 @@ function svg(name) {
   const preview = document.getElementById("msg-photo-preview");
   photoInput.addEventListener("change", () => {
     const file = photoInput.files && photoInput.files[0];
-    if (!file) { photoData = null; preview.hidden = true; return; }
+    const nameEl = document.getElementById("msg-file-name");
+    const upBtn = document.getElementById("msg-upload-btn");
+    if (upBtn) upBtn.classList.remove("invalid");
+    if (!file) { photoData = null; preview.hidden = true; if (nameEl) nameEl.textContent = ""; return; }
+    if (nameEl) nameEl.textContent = file.name;
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
@@ -787,7 +791,7 @@ function svg(name) {
     form.querySelectorAll(".invalid").forEach((x) => x.classList.remove("invalid"));
     const missing = [];
     if (!name) { missing.push("your name"); form.querySelector('[name="name"]').classList.add("invalid"); }
-    if (!photoData) { missing.push("a photo"); photoInput.classList.add("invalid"); }
+    if (!photoData) { missing.push("a photo"); const ub = document.getElementById("msg-upload-btn"); if (ub) ub.classList.add("invalid"); }
     if (!firstDate) { missing.push("a first-date idea"); form.querySelector('[name="firstDate"]').classList.add("invalid"); }
     if (!contact) { missing.push("how to reach you"); form.querySelector('[name="contact"]').classList.add("invalid"); }
     if (missing.length) { errEl.textContent = "Please add " + missing.join(", ") + "."; errEl.hidden = false; return; }
