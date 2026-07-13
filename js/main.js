@@ -855,22 +855,32 @@ function svg(name) {
 
     if (FORM_ENDPOINT) {
       const sendBtn = form.querySelector('button[type="submit"]');
-      if (sendBtn) sendBtn.disabled = true;
-      const fd = new FormData();
-      fd.append("name", name); fd.append("about", about);
-      fd.append("firstDate", firstDate); fd.append("contact", contact);
-      fd.append("submittedAt", ts);
-      if (photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
-      // Best-effort delivery: try a normal request first, then fall back to a
-      // fire-and-forget no-cors POST so a missing CORS header still reaches the
-      // backend. The message is already saved locally either way, so a preview
-      // sandbox or flaky network never blocks the thank-you.
+      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = "Sending…"; }
+      const body = (withPhoto) => {
+        const fd = new FormData();
+        fd.append("name", name); fd.append("about", about);
+        fd.append("firstDate", firstDate); fd.append("contact", contact);
+        fd.append("submittedAt", ts);
+        if (withPhoto && photoData) fd.append("photo", dataURLtoBlob(photoData), "photo.jpg");
+        return fd;
+      };
+      let ok = false, why = "";
       try {
-        await fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { Accept: "application/json" } });
+        let res = await fetch(FORM_ENDPOINT, { method: "POST", body: body(true), headers: { Accept: "application/json" } });
+        // some form hosts reject file uploads outright — retry once, text only
+        if (!res.ok && photoData) res = await fetch(FORM_ENDPOINT, { method: "POST", body: body(false), headers: { Accept: "application/json" } });
+        ok = res.ok;
+        if (!ok) { why = "the form service replied " + res.status; console.error("Form endpoint returned", res.status, await res.text().catch(() => "")); }
       } catch (err) {
-        try { await fetch(FORM_ENDPOINT, { method: "POST", body: fd, mode: "no-cors" }); } catch (e) {}
+        why = "I couldn't reach the form service";
+        console.error("Message send failed:", err);
       }
-      if (sendBtn) sendBtn.disabled = false;
+      if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = "Send"; }
+      if (!ok) {
+        errEl.textContent = "That didn't send — " + why + ". Your note is saved; please try again in a moment.";
+        errEl.hidden = false;
+        return;
+      }
     }
 
     form.reset(); photoData = null; preview.hidden = true;
