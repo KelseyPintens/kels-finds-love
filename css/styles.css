@@ -393,6 +393,8 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--forest); line-height: 1
 }
 .to-top { color: var(--sage-dk); text-decoration: none; font-weight: 700; }
 .to-top:hover { text-decoration: underline; }
+.footer-note { display: inline-flex; align-items: center; gap: 6px; color: var(--forest-sf); }
+.footer-note .ico { color: var(--sage-dk); }
 
 /* ---------- guess-my-answer game ---------- */
 .score-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); color: var(--sage-dk); font-weight: 700; padding: 8px 16px; border-radius: 999px; margin-top: 16px; box-shadow: 0 8px 18px -16px rgba(47,58,41,.5); }
