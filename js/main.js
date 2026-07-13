@@ -740,7 +740,7 @@ function svg(name) {
   const KEY = "kelsey_submissions_v1";
   // Paste your form endpoint (Getform / Formspree / Basin) to receive submissions by
   // email; leave "" to store submissions in this browser only.
-  const FORM_ENDPOINT = "";
+  const FORM_ENDPOINT = "https://forminit.com/f/qxqi3n5t5pq";
   function dataURLtoBlob(u) { var a = u.split(","), mime = a[0].match(/:(.*?);/)[1], bin = atob(a[1]), arr = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return new Blob([arr], { type: mime }); }
   const LS_OK = (function () { try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; } catch (e) { return false; } })();
   let mem = [];
