@@ -556,7 +556,7 @@ function svg(name) {
 
   const CATS = [
     { icon: "home", label: "Our first home", name: "M · A · S · H", options: ["Mansion", "Apartment", "Shack", "House"] },
-    { icon: "pin", label: "We'll live in", name: "Forever home", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
+    { icon: "pin", label: "Our forever home", name: "Forever home", options: ["A cottage in the woods", "A little homestead", "A cabin on the lake", "Somewhere brand new"] },
     { icon: "car", label: "We'll drive", name: "Vehicle", options: ["Toyota RAV4", "Vanlife", "Toyota 4Runner", "Toyota Tacoma"] },
     { icon: "paw", label: "We'll have", name: "Pet", options: ["French Brittany", "English Setter", "Corgi", "None"] },
     { icon: "navigation", label: "Honeymoon", name: "Honeymoon", options: ["Japan", "Finland", "New Zealand", "Greece"] },
